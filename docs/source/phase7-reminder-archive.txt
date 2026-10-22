@@ -1,0 +1,1041 @@
+Proceed to PHASE 7 — REMINDER + ARCHIVE FOUNDATION.
+
+PHASE 6 — HOME + ATTENTION ENGINE has passed acceptance.
+
+Preserve all existing working domains:
+
+- Core
+- QUEST
+- University/STUDY
+- STATUS
+- GROWTH
+- LIM
+- HOME / Attention Engine
+- visual shell
+
+Do NOT redesign working architecture.
+
+This phase has TWO focused goals:
+
+1. reliable reminders
+2. basic personal archive / history
+
+After this phase we will enter a dedicated Visual Polish phase.
+
+==================================================
+TOKEN / LOCAL MODEL POLICY
+==================================================
+
+Continue conserving Codex usage.
+
+Preferred mechanical-work delegation:
+
+1. zcode
+2. authorized local fallback such as Qoder
+3. Codex only for lead-engineer reasoning
+
+Delegate:
+
+- repetitive schemas
+- CRUD scaffolding
+- notification UI boilerplate
+- archive list/card UI
+- test expansion
+- fixtures
+- mapping functions
+- lint/type cleanup
+- documentation formatting
+
+Codex personally owns:
+
+- reminder scheduling semantics
+- persistence/restart behavior
+- deduplication
+- quiet-hours rules
+- archive source-of-truth boundaries
+- Captain's Log integrity
+- privacy
+- final acceptance
+
+==================================================
+PART A — REMINDER
+==================================================
+
+Reminder must distinguish:
+
+ReminderRule
+!=
+NotificationInstance
+
+ReminderRule means:
+
+"when / under what condition should the user be reminded?"
+
+NotificationInstance means:
+
+"a concrete reminder delivery occurrence."
+
+Do NOT merge these concepts into one row.
+
+==================================================
+REMINDER RULE
+==================================================
+
+Create a Core resource equivalent to:
+
+reminder-rules/
+
+Conceptual fields:
+
+id
+ownerId
+
+title
+
+sourceType nullable
+sourceId nullable
+
+scheduleType
+scheduledAt nullable
+cronExpression nullable
+
+priority
+
+quietHoursPolicy nullable
+
+status
+
+lastTriggeredAt nullable
+nextTriggerAt nullable
+
+version
+
+createdAt
+updatedAt
+deletedAt nullable
+
+Keep MVP simple.
+
+Primary use case:
+
+one-time scheduled reminders.
+
+Recurring reminder support may be minimal if already easy,
+but do not build a complex calendar engine.
+
+==================================================
+NOTIFICATION INSTANCE
+==================================================
+
+Create:
+
+notification-instances/
+
+Conceptual fields:
+
+id
+ownerId
+reminderRuleId nullable
+
+title
+body nullable
+
+scheduledFor
+generatedAt
+deliveredAt nullable
+readAt nullable
+dismissedAt nullable
+
+priority
+
+dedupeKey nullable
+
+status
+
+timestamps
+
+A NotificationInstance must survive independently of whether the rule later changes.
+
+==================================================
+PERSISTENCE
+==================================================
+
+Hard rule:
+
+REMINDERS MUST NOT LIVE ONLY IN MEMORY.
+
+If LIFE HUD / scheduler restarts:
+
+future reminders must still exist.
+
+Use persistent database state as authority.
+
+Use the existing Ship scheduler.
+
+Do NOT introduce BullMQ or another queue system.
+
+==================================================
+SCHEDULER RECOVERY
+==================================================
+
+On scheduler restart:
+
+reconstruct / reconcile pending ReminderRules.
+
+Do not permanently lose future reminders.
+
+Avoid duplicate delivery during restart recovery.
+
+==================================================
+DEDUPLICATION
+==================================================
+
+If the same logical reminder is requested twice accidentally because of:
+
+browser retry
+Lim retry
+network retry
+ActionGroup retry
+
+do not generate duplicate identical notifications.
+
+Use a sensible dedupe key / idempotency rule.
+
+==================================================
+PRIORITY
+==================================================
+
+Use a simple priority model equivalent to:
+
+P0
+P1
+P2
+P3
+
+P0:
+rare / genuinely critical
+
+P1:
+important
+
+P2:
+normal
+
+P3:
+low priority
+
+Do not mark ordinary homework reminders P0.
+
+==================================================
+QUIET HOURS
+==================================================
+
+Support user-level or local configuration for quiet hours.
+
+Example:
+
+23:30–07:30
+
+Normal reminders during quiet hours may:
+
+- remain pending
+- deliver silently
+- delay to quiet-hours end
+
+depending on a simple policy.
+
+P0 may bypass quiet hours,
+but P0 must be rare.
+
+Do not build a huge notification preference system.
+
+==================================================
+REMINDER DOMAIN INTEGRATION
+==================================================
+
+Allow ReminderRule to reference:
+
+Task
+Assignment
+Exam
+generic manual reminder
+
+Do NOT duplicate source data.
+
+Example:
+
+Reminder:
+“今晚写高数第三章作业”
+
+source:
+Task ID
+
+The reminder references the Task.
+
+It does not copy the whole Task object.
+
+==================================================
+LIM REMINDER ACTION
+==================================================
+
+Extend Lim Action Registry minimally.
+
+Add:
+
+CREATE_REMINDER
+
+Optional if justified:
+
+UPDATE_REMINDER
+CANCEL_REMINDER
+
+Risk:
+
+R1
+
+Natural-language scenario:
+
+“下午四点提醒我拿快递。”
+
+Expected:
+
+CREATE_REMINDER
+
+Do not require creating a Task unless the user actually asked for a Task.
+
+Another scenario:
+
+“周四晚上提醒我写英语作文。”
+
+If a linked Assignment/Task is clear,
+Reminder may reference it.
+
+==================================================
+REMINDER RECEIPT
+==================================================
+
+Keep Lim response concise.
+
+Example:
+
+✅ 已设置，周四晚上提醒你。
+
+Do not narrate scheduler internals.
+
+==================================================
+REMINDER UI
+==================================================
+
+Create lightweight UI.
+
+Possible entry points:
+
+HOME:
+small upcoming reminder if relevant
+
+MORE / tools:
+Reminders entry if useful
+
+Task / Assignment detail:
+show associated reminder
+
+Do NOT turn HOME into a notification inbox.
+
+==================================================
+NOTIFICATION INBOX
+==================================================
+
+A minimal notification view is acceptable:
+
+unread
+recent
+dismissed/read
+
+Do not build social-style notification engagement mechanics.
+
+==================================================
+REQUIRED REMINDER TESTS
+==================================================
+
+REM-001
+One-time ReminderRule persists.
+
+REM-002
+Restart does not lose future reminder.
+
+REM-003
+Scheduler restart does not duplicate delivery.
+
+REM-004
+ReminderRule and NotificationInstance are separate.
+
+REM-005
+Read/dismiss state does not delete ReminderRule.
+
+REM-006
+Duplicate logical reminder is deduplicated.
+
+REM-007
+Quiet hours affect ordinary reminder correctly.
+
+REM-008
+P0 behavior follows explicit rule.
+
+REM-009
+User A cannot access User B reminder.
+
+REM-010
+Lim CREATE_REMINDER executes through registered action.
+
+REM-011
+AI/provider failure does not delete scheduled reminders.
+
+==================================================
+PART B — ARCHIVE
+==================================================
+
+ARCHIVE is a temporal / memory lens.
+
+ARCHIVE is NOT:
+
+- a duplicate database
+- a copy of every Task
+- a second STUDY
+- a second GROWTH
+- automatic AI biography
+
+Canonical rule:
+
+SOURCE DOMAIN REMAINS SOURCE OF TRUTH.
+
+Archive stores:
+
+references
+indexes
+summaries where appropriate
+user-authored logs
+meaningful markers
+
+==================================================
+ARCHIVE ENTRY
+==================================================
+
+Create:
+
+archive-entries/
+
+Conceptual fields:
+
+id
+ownerId
+
+archiveType
+
+periodStart nullable
+periodEnd nullable
+
+voyageId nullable
+
+title
+summary nullable
+
+privacyLevel
+
+createdAt
+updatedAt
+deletedAt nullable
+
+Use ArchiveEntry primarily as:
+
+period index / summary container
+
+not raw duplication.
+
+==================================================
+ARCHIVE ENTRY LINKS
+==================================================
+
+Create:
+
+archive-entry-links/
+
+Conceptually:
+
+archiveEntryId
+sourceType
+sourceId
+relationType nullable
+timestamps
+
+Example:
+
+Daily Archive
+→ TaskCompleted
+→ StatusMoment
+→ LearningRecord
+→ ClassSession
+
+Do not copy those records.
+
+==================================================
+CAPTAIN'S LOG
+==================================================
+
+Implement real Captain's Log.
+
+Create:
+
+captain-logs/
+
+Conceptual fields:
+
+id
+ownerId
+
+body
+
+recordedAt
+voyageId nullable
+
+privacyLevel
+aiAccessPolicy
+
+version
+
+createdAt
+updatedAt
+deletedAt nullable
+
+Hard rule:
+
+USER BODY IS AUTHORITATIVE.
+
+Never overwrite it with AI-generated text.
+
+==================================================
+AI SUMMARY SEPARATION
+==================================================
+
+If AI summaries are implemented now,
+store them separately.
+
+For example:
+
+captain-log-summaries/
+
+or separate summary field with strict provenance,
+provided it can NEVER replace user body.
+
+Prefer separate representation if straightforward.
+
+If AI summarization would broaden scope too much:
+
+defer it.
+
+Captain's Log itself matters more.
+
+==================================================
+REMEMBER THIS MOMENT
+==================================================
+
+Implement:
+
+✨ 记住这一刻
+
+This should create a lightweight marker / archive reference.
+
+It may capture links to current context such as:
+
+Voyage
+Task
+Project
+LearningRecord
+Course
+StatusMoment
+
+Do NOT snapshot/copy entire objects.
+
+==================================================
+MEMORY MARKER
+==================================================
+
+Use either:
+
+archive marker subtype
+
+or a small dedicated resource if cleaner.
+
+Conceptual purpose:
+
+"This moment mattered."
+
+Possible fields:
+
+id
+ownerId
+
+title nullable
+note nullable
+
+recordedAt
+
+voyageId nullable
+
+privacyLevel
+
+createdAt
+
+links to source entities
+
+Do not build full long-term MemoryItems yet.
+
+==================================================
+DAILY HISTORY
+==================================================
+
+Implement a basic daily timeline/history view.
+
+It may aggregate references to:
+
+completed Tasks
+classes
+Assignments changed/submitted
+StatusMoments
+LearningRecords
+CaptainLogs
+MemoryMarkers
+
+This is a read model / index.
+
+Do not create copies.
+
+==================================================
+SEMESTER / VOYAGE ARCHIVE SKELETON
+==================================================
+
+Prepare basic hierarchy:
+
+LIFE
+→ Voyage
+→ Semester
+→ Day / meaningful entries
+
+Do not build elaborate visualization yet.
+
+University Voyage must remain browsable after completion in the future.
+
+==================================================
+SEARCH / FINDING THE PAST
+==================================================
+
+For this phase:
+
+basic structured / keyword retrieval is sufficient.
+
+Examples:
+
+“过拟合”
+“LIFE HUD”
+“高数”
+“10月13日”
+
+Do NOT build semantic/vector RAG in this phase.
+
+If existing search foundation is minimal,
+add only enough to find:
+
+Captain Logs
+Learning Records
+Archive titles
+linked source entity titles
+
+==================================================
+ARCHIVE UI
+==================================================
+
+Turn ARCHIVE placeholder into a real page.
+
+Mobile hierarchy:
+
+最近
+时间线
+Captain's Log
+重要时刻
+
+Voyage / Semester navigation may be secondary.
+
+Do not make it look like a filesystem.
+
+==================================================
+CAPTAIN'S LOG UI
+==================================================
+
+Provide a simple writing surface.
+
+User should be able to write freely.
+
+Do not force:
+
+mood
+tags
+lesson learned
+action items
+productivity reflection
+
+Text alone is valid.
+
+==================================================
+CRITICAL SILENCE RULE
+==================================================
+
+A Captain's Log does not need to become:
+
+Task
+Goal
+LearningRecord
+MemoryItem
+
+It may simply remain a log.
+
+Do not auto-taskify reflection.
+
+==================================================
+LIM + ARCHIVE
+==================================================
+
+Do NOT build full long-term Lim Memory yet.
+
+But support explicit low-risk archive actions such as:
+
+CREATE_CAPTAIN_LOG
+REMEMBER_MOMENT
+
+only if clean and within scope.
+
+Examples:
+
+“Lim，把这一刻记下来。”
+
+→ REMEMBER_MOMENT
+
+“把刚才这段存成 Captain's Log。”
+
+→ CREATE_CAPTAIN_LOG
+
+Do NOT silently archive every chat.
+
+==================================================
+NIGHT VOYAGE
+==================================================
+
+Still NOT implemented.
+
+Do not add Night Voyage in this phase.
+
+==================================================
+PRIVACY
+==================================================
+
+Captain Logs may be:
+
+PRIVATE
+HIGH_PRIVATE
+
+AI access policy must be respected.
+
+A CaptainLog with:
+
+aiAccessPolicy = NEVER
+
+must not enter ordinary Lim context.
+
+Do not weaken existing Context Builder privacy.
+
+==================================================
+ARCHIVE EVENTS
+==================================================
+
+Do not create enormous event volume.
+
+Archive may consume existing events/read models.
+
+Useful inputs:
+
+TaskCompleted
+AssignmentSubmitted
+LearningRecordCreated
+StatusMomentRecorded
+
+But Archive should not generate duplicate domain truth.
+
+==================================================
+RETENTION / DELETE
+==================================================
+
+Soft-delete standard records where appropriate.
+
+Captain's Log should support privacy deletion compatibility.
+
+Do NOT implement full export/hard-delete suite yet.
+
+That remains hardening work.
+
+==================================================
+REALISTIC FIXTURE
+==================================================
+
+Create deterministic archive data such as:
+
+Captain's Log:
+
+“今天开始觉得 LIFE HUD
+可能不只是一个大学工具，
+而是真的可以陪我走很久。”
+
+LearningRecord:
+过拟合与 LIFE HUD 推荐系统
+
+Project:
+LIFE HUD · Project #001
+
+Memory Marker:
+“第一次跑通 Assignment → Task → Lim”
+
+Use realistic dates.
+
+==================================================
+REQUIRED ARCHIVE TESTS
+==================================================
+
+ARCH-001
+Captain's Log body persists exactly.
+
+ARCH-002
+AI-generated text cannot overwrite Captain's Log body.
+
+ARCH-003
+ArchiveEntry links to source records rather than duplicating them.
+
+ARCH-004
+Remember This Moment creates marker/reference.
+
+ARCH-005
+Daily timeline can aggregate existing domain activity.
+
+ARCH-006
+Deleted source records are handled gracefully.
+
+ARCH-007
+User A cannot access User B Archive/CaptainLog.
+
+ARCH-008
+aiAccessPolicy NEVER CaptainLog is excluded from Lim context.
+
+ARCH-009
+Captain's Log may exist without Task/Goal/LearningRecord creation.
+
+ARCH-010
+Voyage/Semester historical navigation works at skeleton level.
+
+ARCH-011
+keyword lookup can find relevant history.
+
+==================================================
+HOME INTEGRATION
+==================================================
+
+HOME may show:
+
+important upcoming reminder
+
+ONLY when attention-relevant.
+
+Do not create a notification feed.
+
+Remembered moments / Archive should NOT normally appear on HOME.
+
+HOME remains present-focused.
+
+==================================================
+LIM INTEGRATION
+==================================================
+
+Extend Lim registry minimally:
+
+CREATE_REMINDER
+REMEMBER_MOMENT
+CREATE_CAPTAIN_LOG
+
+Do not implement automatic memory consolidation.
+
+Keep action schemas strict.
+
+==================================================
+GOLDEN PHASE 7 JOURNEY
+==================================================
+
+1. Login.
+
+2. Create Task:
+拿快递.
+
+3. Tell Lim:
+
+“下午四点提醒我拿快递。”
+
+4. Verify ReminderRule persists.
+
+5. Restart scheduler/application test process.
+
+6. Verify reminder still exists.
+
+7. Trigger DEV time around 16:00.
+
+8. Verify one NotificationInstance is generated.
+
+9. Verify no duplicate delivery.
+
+10. Mark notification read.
+
+11. Verify rule/history semantics remain correct.
+
+12. Write Captain's Log:
+
+“今天第一次感觉 LIFE HUD 真有可能做出来。”
+
+13. Reload.
+
+14. Verify exact original text remains.
+
+15. Click:
+
+✨记住这一刻
+
+16. Verify marker exists and references current relevant context.
+
+17. Open ARCHIVE.
+
+18. Verify today's timeline can show:
+
+Task
+LearningRecord
+Status
+CaptainLog / marker
+
+through links/read models,
+not copies.
+
+19. Search:
+LIFE HUD
+
+20. Verify relevant CaptainLog / LearningRecord / Archive entry is findable.
+
+21. Set CaptainLog AI policy NEVER.
+
+22. Ask ordinary Lim question.
+
+23. Verify that CaptainLog does not enter model context.
+
+==================================================
+DO NOT IMPLEMENT
+==================================================
+
+Do NOT implement:
+
+long-term Memory consolidation
+personality pattern learning
+Night Voyage
+Bridge
+semantic vector search
+advanced reports
+SOCIAL
+WALLET
+voice
+dynamic avatar
+public deployment
+native mobile
+
+==================================================
+VISUAL QUALITY
+==================================================
+
+Maintain the current LIFE HUD design language.
+
+Do not spend major time polishing visuals yet.
+
+However:
+
+new Reminder and Archive pages must look native to LIFE HUD,
+not generic CRUD/admin screens.
+
+==================================================
+PHASE ACCEPTANCE
+==================================================
+
+PHASE 7 is complete when:
+
+1. ReminderRule persists.
+
+2. NotificationInstance is separate.
+
+3. scheduler restart does not lose reminders.
+
+4. duplicate reminders are controlled.
+
+5. quiet hours basic behavior works.
+
+6. Lim can create a reminder safely.
+
+7. Captain's Log works.
+
+8. original log text is authoritative.
+
+9. Remember This Moment works.
+
+10. Archive references source domains rather than duplicating them.
+
+11. basic daily history works.
+
+12. basic historical keyword retrieval works.
+
+13. Archive respects owner isolation.
+
+14. Archive respects AI privacy policies.
+
+15. HOME only surfaces attention-relevant reminders.
+
+16. no automatic memory consolidation exists.
+
+17. build passes.
+
+18. typecheck passes.
+
+19. automated tests pass.
+
+20. browser/E2E Golden Journey passes.
+
+==================================================
+FINAL REPORT
+==================================================
+
+Report concisely:
+
+- Reminder architecture
+- restart/recovery behavior
+- dedupe behavior
+- quiet-hours behavior
+- Lim reminder integration
+- Archive resources
+- Captain's Log behavior
+- Remember This Moment behavior
+- historical lookup
+- privacy behavior
+- tests/E2E
+- zcode/Qoder delegation
+- unresolved issues
+
+Commit safely.
+
+Then STOP.
+
+Do NOT automatically begin Visual Polish.

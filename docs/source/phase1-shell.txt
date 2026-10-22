@@ -1,0 +1,462 @@
+Proceed to PHASE 1 — LIFE HUD SHELL.
+
+The Ship foundation has passed the local foundation acceptance checks.
+
+Do NOT continue spending time on generic infrastructure.
+
+The goal of this phase is to turn the working Ship foundation into the real LIFE HUD application shell.
+
+Work quickly and conserve Codex usage.
+
+Use zcode aggressively for:
+- repetitive UI boilerplate
+- CSS/Tailwind cleanup
+- component scaffolding
+- responsive variants
+- repetitive route creation
+- low-risk visual adjustments
+- lint/type cleanup
+
+Codex must personally own:
+- application information architecture
+- component boundaries
+- Lim global entry behavior
+- responsive architecture
+- accessibility
+- final visual review
+
+==================================================
+PHASE GOAL
+==================================================
+
+Create the LIFE HUD application shell.
+
+This is NOT a business-feature phase.
+
+Do not implement real QUEST/STUDY/STATUS/GROWTH business logic yet.
+
+==================================================
+LOCKED MOBILE IA
+==================================================
+
+Bottom navigation:
+
+HOME
+QUEST
+◉ LIM
+STUDY
+MORE
+
+This navigation is authoritative.
+
+The center LIM control is special.
+
+It is NOT just a normal route.
+
+It should be architected as a global Lim entry that can later preserve:
+
+- source route
+- source entity
+- conversation context
+
+Prepare a UI state equivalent in concept to:
+
+LimUIState:
+- isOpen
+- presentation
+- sourceRoute
+- sourceEntity
+- conversationId
+
+Possible presentation values:
+
+sheet
+fullscreen
+bridge
+
+For this phase:
+implement only the shell behavior.
+
+No full Lim intelligence yet.
+
+==================================================
+DESKTOP IA
+==================================================
+
+Desktop should use a persistent LIFE HUD shell.
+
+Prefer:
+
+left navigation / command rail
+main content workspace
+optional contextual right-side Lim presence area where appropriate
+
+Do not simply stretch the mobile bottom navigation across desktop.
+
+Desktop HOME should eventually support:
+
+upper-left:
+Today / schedule
+
+center:
+NEXT
+
+right:
+Lim presence
+
+lower areas:
+status / brief / voyage
+
+For now establish only the layout system and placeholders.
+
+==================================================
+ROUTES / SECTIONS
+==================================================
+
+Create usable shell routes for:
+
+HOME
+QUEST
+STUDY
+MORE
+
+MORE should expose placeholders/navigation for:
+
+LIFE
+- STATUS
+- WALLET
+- SOCIAL
+- GROWTH
+
+MEMORY
+- ARCHIVE
+- VOYAGE
+
+TOOLS
+- SEARCH
+- FILES
+
+SETTINGS
+- SETTINGS
+- PRIVACY
+
+Do NOT implement the business functionality behind these yet.
+
+==================================================
+DESIGN LANGUAGE
+==================================================
+
+LIFE HUD must visually stop looking like a generic SaaS starter.
+
+Direction:
+
+dark blue-black space atmosphere
+subtle starfield
+restrained particles
+translucent glass
+clean HUD lines
+cold blue accents
+high readability
+quiet futuristic feeling
+
+Avoid:
+
+corporate SaaS dashboard
+neon cyberpunk
+RGB gamer UI
+heavy gradients everywhere
+mobile-game appearance
+too many glowing borders
+too much HUD decoration
+
+World-building intensity:
+
+ordinary modules:
+10–20%
+
+HOME:
+20–30%
+
+Bridge:
+not implemented yet
+
+==================================================
+DESIGN TOKENS
+==================================================
+
+Centralize semantic design tokens.
+
+At minimum support concepts equivalent to:
+
+surface
+surfaceElevated
+surfaceGlass
+
+textPrimary
+textSecondary
+
+accent
+
+warning
+danger
+success
+
+borderSoft
+glowActive
+
+Also prepare world/atmosphere tokens such as:
+
+starDensity
+ambientGlow
+voyageTint
+limPresenceIntensity
+hudDepth
+particleIntensity
+
+World tokens must never reduce readability.
+
+Do not hardcode random colors independently in every component.
+
+==================================================
+CORE COMPONENTS
+==================================================
+
+Create/refine reusable components such as:
+
+AppShell
+DesktopSidebar
+MobileBottomNav
+GlassCard
+HUDCard
+SectionHeader
+LimPresence
+StatusChip
+ActionButton
+EmptyState
+Modal
+Sheet
+Popover
+
+Reuse Ship/shadcn primitives where appropriate.
+
+Do not recreate primitive components unnecessarily.
+
+==================================================
+LIM PRESENCE
+==================================================
+
+For this phase Lim is visual/presentational only.
+
+Prepare at least:
+
+small presence/avatar state
+global center-nav entry
+overlay/sheet shell
+
+Do not implement full AI action behavior.
+
+The shell must make it possible to open Lim from:
+
+HOME
+QUEST
+STUDY
+MORE
+
+and preserve the route it was opened from.
+
+==================================================
+HOME PLACEHOLDER
+==================================================
+
+Create a visually representative HOME shell.
+
+Use realistic LIFE HUD seed text.
+
+Do NOT use:
+
+Lorem ipsum
+Task 1
+Test User
+
+Use realistic examples such as:
+
+高等数学
+计算机思维与人工智能基础
+高数第三章作业
+LIFE HUD · Project #001
+
+HOME may visually include placeholder versions of:
+
+NEXT
+今日安排
+状态
+Lim Brief
+Voyage
+
+These are presentation placeholders only.
+
+Do not build Attention Engine yet.
+
+==================================================
+QUEST PLACEHOLDER
+==================================================
+
+Create a QUEST shell demonstrating hierarchy for:
+
+NOW
+TODAY
+INBOX
+
+No full task backend behavior in this phase.
+
+==================================================
+STUDY PLACEHOLDER
+==================================================
+
+Create a STUDY shell demonstrating:
+
+今日课程
+课程
+作业
+资料
+
+No University domain implementation yet.
+
+==================================================
+MORE
+==================================================
+
+Create the actual MORE navigation screen.
+
+Group items clearly.
+
+Avoid badge clutter.
+
+==================================================
+RESPONSIVE REQUIREMENTS
+==================================================
+
+Primary targets:
+
+mobile:
+< 768px
+
+desktop:
+>= 1024px
+
+Tablet may adapt naturally.
+
+Verify both:
+
+mobile-width browser
+desktop browser
+
+Do not create completely unrelated mobile and desktop codebases.
+
+Share components and tokens where reasonable.
+
+==================================================
+PWA
+==================================================
+
+Do NOT spend substantial time on full PWA polish.
+
+If the existing foundation makes manifest/installability trivial,
+basic preparation is acceptable.
+
+Otherwise defer it.
+
+The priority is the LIFE HUD shell.
+
+==================================================
+DO NOT IMPLEMENT
+==================================================
+
+Do NOT implement:
+
+Task domain
+Assignment domain
+Course domain
+Status records
+Learning Records
+Attention Engine
+Memory engine
+Lim actions
+Reminder engine
+Archive intelligence
+Bridge
+Night Voyage
+WALLET
+SOCIAL logic
+
+Do not broaden scope.
+
+==================================================
+ACCEPTANCE
+==================================================
+
+PHASE 1 is complete when:
+
+1. LIFE HUD no longer visually feels like Ship/demo SaaS.
+
+2. Mobile navigation works:
+
+HOME
+QUEST
+◉ LIM
+STUDY
+MORE
+
+3. Desktop shell exists.
+
+4. HOME shell exists.
+
+5. QUEST shell exists.
+
+6. STUDY shell exists.
+
+7. MORE screen exists.
+
+8. LIM global overlay can open from any main route.
+
+9. Lim knows/preserves which route opened it at the UI-state level.
+
+10. centralized design tokens exist.
+
+11. reusable shell components exist.
+
+12. mobile layout is usable.
+
+13. desktop layout is usable.
+
+14. accessibility/focus basics are not broken.
+
+15. no real business domains were prematurely implemented.
+
+16. build passes.
+
+17. typecheck passes.
+
+18. relevant tests pass.
+
+==================================================
+FINAL REPORT
+==================================================
+
+At completion report only:
+
+- major UI architecture created
+- routes created
+- reusable components created
+- mobile result
+- desktop result
+- Lim overlay behavior
+- tests/typecheck
+- what zcode handled
+- remaining visual issues
+
+Keep the report concise.
+
+Then STOP.
+
+Do not begin Core/QUEST implementation automatically.

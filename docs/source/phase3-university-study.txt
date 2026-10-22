@@ -1,0 +1,1168 @@
+Proceed to PHASE 3 — UNIVERSITY PACK + STUDY.
+
+PHASE 2 — Core + QUEST has passed acceptance.
+
+Preserve the existing LIFE HUD shell and QUEST implementation.
+
+Do NOT redesign working Core/QUEST architecture.
+
+Work quickly and conserve Codex usage.
+
+Use zcode aggressively for:
+- repetitive resource scaffolding
+- schema boilerplate after Codex fixes semantics
+- endpoint boilerplate
+- test expansion
+- seed fixtures
+- UI binding
+- timetable rendering boilerplate
+- lint/type cleanup
+
+Codex personally owns:
+- University domain boundaries
+- Assignment vs Task semantics
+- DONE vs SUBMITTED semantics
+- cross-domain event behavior
+- due-date synchronization rules
+- Course/File ownership model
+- authorization
+- transactions
+- final review
+
+==================================================
+PHASE GOAL
+==================================================
+
+Implement the first real University Pack and turn STUDY
+from a visual shell into a real university learning workspace.
+
+Implement:
+
+- Semester
+- Course
+- Enrollment
+- ClassSession
+- Assignment
+- Exam
+- Grade foundation
+- CourseMaterialLink foundation
+
+Integrate with existing Core / QUEST.
+
+By the end of this phase:
+
+STUDY must display real persisted university data.
+
+An academic Assignment must be able to create/link to a Core Task.
+
+Completing the Task must NOT falsely mark the Assignment as submitted.
+
+==================================================
+ARCHITECTURAL RULE
+==================================================
+
+University Pack contains only university-specific concepts.
+
+Core remains authoritative for universal concepts.
+
+DO NOT create university-specific duplicates of:
+
+Task
+Project
+Person
+Place
+File
+Goal
+
+Examples:
+
+Course Project
+= Core Project linked to Course
+
+Classmate
+= Core Person with university relationship/context
+
+Classroom
+= Core Place associated with ClassSession
+
+Course material
+= Core File referenced by CourseMaterialLink
+
+==================================================
+RESOURCE DIRECTION
+==================================================
+
+Use Ship vertical resource conventions.
+
+Expected resources approximately:
+
+apps/api/src/resources/
+
+  semesters/
+  courses/
+  enrollments/
+  class-sessions/
+  assignments/
+  exams/
+  grades/
+  course-material-links/
+
+Use:
+
+schema
+→ persistence
+
+methods
+→ university business logic
+
+endpoints
+→ transport only
+
+middlewares
+→ auth / ownership
+
+handlers
+→ reactions to university/domain events
+
+Do not place major business rules in React.
+
+==================================================
+SEMESTER
+==================================================
+
+Semester belongs to the active University Voyage.
+
+Initial conceptual fields:
+
+id
+ownerId
+voyageId
+
+name
+
+startAt
+endAt
+
+status
+
+version
+
+createdAt
+updatedAt
+deletedAt where appropriate
+
+Example:
+
+大一上 · Semester 1
+
+Do NOT treat Semester as a replacement for Voyage.
+
+Relationship:
+
+University Voyage
+→ Semester
+
+Voyage is life-period Core.
+Semester is university structure.
+
+==================================================
+COURSE
+==================================================
+
+Initial Course fields conceptually:
+
+id
+ownerId
+semesterId
+
+name
+code nullable
+teacher nullable
+credits nullable
+
+status
+
+version
+timestamps
+
+Example seed courses:
+
+高等数学
+计算机思维与人工智能基础
+大学英语
+体育
+
+Do not force code/teacher/credits to be filled.
+
+==================================================
+ENROLLMENT
+==================================================
+
+Keep Enrollment minimal.
+
+Represents:
+
+current user participates in Course.
+
+Conceptual fields:
+
+id
+ownerId
+courseId
+status
+timestamps
+
+Do not overbuild multi-student classroom collaboration.
+
+LIFE HUD MVP is personal.
+
+==================================================
+CLASS SESSION
+==================================================
+
+ClassSession represents scheduled class occurrence/rule.
+
+Initial conceptual fields may include:
+
+id
+ownerId
+courseId
+
+weekday OR specificDate depending on implementation
+startTime
+endTime
+
+placeId nullable
+
+validFrom nullable
+validTo nullable
+
+version
+timestamps
+
+Do not implement a huge recurrence engine.
+
+Support the university timetable needed by STUDY.
+
+==================================================
+PLACE RULE
+==================================================
+
+Place is Core.
+
+If the Core Place resource does not yet exist,
+add the MINIMAL Core Place resource required for ClassSession.
+
+Do not create:
+
+Classroom table
+CampusLocation table
+
+as university-only duplicated concepts.
+
+Use Core Place.
+
+Keep Place minimal:
+
+id
+ownerId
+name
+note nullable
+timestamps
+
+==================================================
+ASSIGNMENT
+==================================================
+
+Assignment is one of the most important objects in LIFE HUD.
+
+Hard invariant:
+
+ASSIGNMENT != TASK
+
+Assignment means:
+
+“现实世界/课程要求我完成的东西。”
+
+Task means:
+
+“我要怎样执行它。”
+
+Initial Assignment fields conceptually:
+
+id
+ownerId
+courseId
+
+title
+description nullable
+
+publishedAt nullable
+dueAt nullable
+
+workState
+submissionState
+
+submittedAt nullable
+
+version
+createdAt
+updatedAt
+deletedAt nullable
+
+==================================================
+WORK STATE
+==================================================
+
+Use a model equivalent to:
+
+NOT_STARTED
+IN_PROGRESS
+DONE
+
+Do NOT use SUBMITTED here.
+
+==================================================
+SUBMISSION STATE
+==================================================
+
+Separate from work state.
+
+Use a model equivalent to:
+
+NOT_SUBMITTED
+SUBMITTED
+
+Optionally later:
+NOT_REQUIRED
+
+but do not overbuild if unnecessary now.
+
+Critical valid state:
+
+workState = DONE
+submissionState = NOT_SUBMITTED
+
+This state MUST exist.
+
+==================================================
+CRITICAL INVARIANT
+==================================================
+
+DONE != SUBMITTED
+
+Example:
+
+User finishes 高数第三章作业.
+
+The linked QUEST Task becomes:
+
+COMPLETED
+
+Assignment may become:
+
+workState = DONE
+
+But it MUST remain:
+
+submissionState = NOT_SUBMITTED
+
+until the user explicitly performs:
+
+MARK SUBMITTED
+
+or an equivalent explicit submission action.
+
+Add automated tests proving this.
+
+==================================================
+ASSIGNMENT → TASK LINK
+==================================================
+
+When an Assignment is created,
+LIFE HUD may create or propose a linked Core Task.
+
+For this phase,
+implement a deterministic integration rule.
+
+Preferred initial behavior:
+
+Creating a normal actionable Assignment
+creates one linked Core Task
+unless explicitly suppressed.
+
+Example:
+
+Assignment:
+高数第三章作业
+
+dueAt:
+2026-10-XX 23:59
+
+Linked Task:
+完成高数第三章作业
+
+sourceType = ASSIGNMENT
+sourceId = assignmentId
+
+Task dueAt should initially follow Assignment dueAt.
+
+But:
+
+Task remains Core.
+Assignment remains University.
+
+They are separate rows with separate IDs.
+
+==================================================
+DO NOT DUPLICATE SOURCE OF TRUTH
+==================================================
+
+Assignment is authoritative for:
+
+course requirement
+academic deadline
+submission state
+
+Task is authoritative for:
+
+planned execution
+start/complete/drop workflow
+estimated work
+QUEST scheduling
+
+Do not store competing independent copies of academic meaning.
+
+==================================================
+ASSIGNMENT DUE DATE UPDATE
+==================================================
+
+Critical scenario:
+
+Original:
+
+Assignment dueAt:
+Friday 23:59
+
+Task plannedStart:
+Thursday 19:00
+
+Teacher changes Assignment:
+
+dueAt → Monday 23:59
+
+Expected:
+
+Assignment dueAt changes.
+
+Linked Task hard deadline should be updated to the new Assignment dueAt
+because Assignment is authoritative for the academic deadline.
+
+BUT:
+
+Task plannedStart should NOT automatically change.
+
+User's execution plan remains Thursday 19:00
+unless user/system explicitly reschedules it.
+
+This distinction is critical.
+
+Add automated tests.
+
+==================================================
+TASK DELAY DOES NOT ALTER ASSIGNMENT
+==================================================
+
+Opposite direction:
+
+Assignment dueAt:
+Friday 23:59
+
+Task planned:
+Thursday 19:00
+
+User delays Task:
+Thursday 21:00
+
+Expected:
+
+Task plannedStart → Thursday 21:00
+
+Assignment dueAt remains Friday 23:59.
+
+No backward mutation.
+
+==================================================
+TASK COMPLETION REACTION
+==================================================
+
+When the linked Task completes:
+
+Assignment workState may transition to DONE.
+
+Assignment submissionState does NOT change.
+
+Use a domain-event reaction/handler where appropriate.
+
+Do not make QUEST secretly perform direct arbitrary writes into University tables.
+
+Preferred architecture:
+
+TaskCompleted event
+→ University handler
+→ linked Assignment workState update
+
+Keep cross-domain direction explicit.
+
+==================================================
+MARK ASSIGNMENT SUBMITTED
+==================================================
+
+Implement explicit business method/action:
+
+markAssignmentSubmitted
+
+Expected:
+
+submissionState = SUBMITTED
+submittedAt = timestamp
+
+Do not depend on Task completion endpoint.
+
+Also support correcting it if needed:
+
+markAssignmentNotSubmitted
+
+only if simple and justified.
+
+Do not overbuild submission history yet.
+
+==================================================
+EXAM
+==================================================
+
+Exam represents a real academic event.
+
+Initial conceptual fields:
+
+id
+ownerId
+courseId
+
+title
+examType nullable
+
+startAt
+endAt nullable
+
+placeId nullable
+
+version
+timestamps
+
+Example:
+
+高等数学期中考试
+
+Hard rule:
+
+Creating Exam MUST NOT automatically create:
+
+10 revision Tasks
+study plan
+BOSS battle
+fake readiness %
+
+The Exam is a fact.
+
+Preparation belongs to QUEST.
+
+Later Lim may help create prep Tasks.
+
+Not now.
+
+==================================================
+GRADE
+==================================================
+
+Implement only a minimal Grade foundation.
+
+Conceptual:
+
+id
+ownerId
+courseId
+
+assessmentType/reference nullable
+
+score nullable
+maxScore nullable
+weight nullable
+
+recordedAt
+
+timestamps
+
+Do not build GPA engine yet.
+
+Do not build advanced analytics.
+
+==================================================
+COURSE MATERIAL LINK
+==================================================
+
+Do NOT duplicate files.
+
+CourseMaterialLink should reference the existing Core/File foundation.
+
+Conceptually:
+
+id
+ownerId
+courseId
+fileId
+
+materialType nullable
+label nullable
+
+timestamps
+
+If full File metadata resource is not yet available,
+use the existing Ship storage/file identity cleanly
+and add only the minimal LIFE HUD bridge needed.
+
+Do not build Files/Search Phase here.
+
+==================================================
+STUDY UI
+==================================================
+
+Turn the existing STUDY shell into real UI.
+
+Mobile first.
+
+Primary sections:
+
+今日课程
+课程
+作业
+资料
+
+Secondary entry points may prepare for:
+
+考试
+成绩
+
+Do not overload the first screen.
+
+==================================================
+STUDY HOME
+==================================================
+
+Suggested hierarchy:
+
+今日课程
+
+→ current / next class
+
+今日学习任务
+
+→ Assignment-linked QUEST Tasks
+
+最近资料
+
+→ if foundation available
+
+Lim presence
+
+Do not build full AI study assistant yet.
+
+==================================================
+TODAY COURSES
+==================================================
+
+Display real ClassSession data.
+
+Example:
+
+09:50–11:25
+高等数学
+
+14:00–15:35
+计算机思维与人工智能基础
+
+Current/next logic should be deterministic.
+
+No AI required.
+
+==================================================
+COURSE DETAIL
+==================================================
+
+Minimal real Course page should show:
+
+Course name
+basic metadata
+
+Upcoming Assignment(s)
+
+Upcoming Exam(s)
+
+Course materials if present
+
+Do not build knowledge graph.
+
+==================================================
+ASSIGNMENT UI
+==================================================
+
+Clearly display separate states.
+
+For example:
+
+作业已完成
+尚未提交
+
+This must be visually distinguishable.
+
+Do not collapse into one checkbox.
+
+A user should be able to understand:
+
+“我做完了，但还没交。”
+
+==================================================
+QUEST INTEGRATION
+==================================================
+
+Existing QUEST remains the execution workspace.
+
+Assignment-linked Tasks should appear naturally in QUEST.
+
+QUEST must NOT become University-owned.
+
+A manual personal Task and an Assignment Task
+should coexist in the same QUEST.
+
+==================================================
+HOME INTEGRATION
+==================================================
+
+HOME may now consume:
+
+current/next ClassSession
+QUEST NEXT
+
+Do not implement full Attention Engine.
+
+At minimum:
+
+If user is currently inside a scheduled class:
+
+HOME should be able to show current class context.
+
+Do not recommend starting a long unrelated Task as the primary visual action
+while a real class is currently in progress.
+
+Use simple deterministic logic.
+
+==================================================
+REALISTIC DEVELOPMENT SEED
+==================================================
+
+Create stable seed fixtures.
+
+University Voyage:
+existing active University Voyage
+
+Semester:
+大一上 · Semester 1
+
+Courses:
+
+高等数学
+
+计算机思维与人工智能基础
+
+大学英语
+
+体育
+
+ClassSessions example:
+
+09:50–11:25
+高等数学
+
+14:00–15:35
+计算机思维与人工智能基础
+
+next day:
+09:50
+大学英语
+
+Assignment:
+
+高等数学 · 第三章作业
+
+due:
+a deterministic near-term test deadline
+
+workState:
+IN_PROGRESS or NOT_STARTED
+
+submissionState:
+NOT_SUBMITTED
+
+Linked Task:
+
+完成高数第三章作业
+
+estimated:
+35 minutes
+
+Exam:
+
+高等数学期中考试
+
+Use deterministic test dates or DEV time support
+so automated tests do not become flaky.
+
+==================================================
+DEV CLOCK
+==================================================
+
+Introduce or preserve a development-only way to test time-dependent UI.
+
+Prefer a simple dev-only mechanism such as:
+
+DEV_NOW
+
+or existing test clock injection.
+
+We need reliable testing for:
+
+before class
+during class
+after class
+deadline proximity
+
+Do NOT expose debug clock in production mode.
+
+==================================================
+REQUIRED DOMAIN EVENTS
+==================================================
+
+Add/extend event foundation as appropriate:
+
+AssignmentCreated
+AssignmentUpdated
+AssignmentCompleted
+AssignmentSubmitted
+
+ExamCreated
+
+ClassSession changes only if useful.
+
+Do not create dozens of events with no consumer.
+
+==================================================
+AUDIT
+==================================================
+
+Audit meaningful actions:
+
+Assignment created
+due date changed
+work marked done
+submission marked submitted
+
+Do not log every page view.
+
+==================================================
+AUTHORIZATION
+==================================================
+
+User A must never access User B:
+
+Semester
+Course
+ClassSession
+Assignment
+Exam
+Grade
+CourseMaterialLink
+
+Cross-user IDs must not leak existence.
+
+Add tests.
+
+==================================================
+REQUIRED AUTOMATED TESTS
+==================================================
+
+UNI-001
+Create Semester under user's active University Voyage.
+
+UNI-002
+Create Course under Semester.
+
+UNI-003
+Create Assignment.
+
+UNI-004
+Assignment creation creates/links Core Task according to current integration rule.
+
+UNI-005
+Assignment and Task have different IDs and remain separate objects.
+
+UNI-006
+Assignment dueAt propagates to linked Task dueAt.
+
+UNI-007
+Updating Assignment dueAt updates linked Task dueAt.
+
+UNI-008
+Updating Assignment dueAt does NOT modify Task plannedStart.
+
+UNI-009
+Delaying Task plannedStart does NOT modify Assignment dueAt.
+
+UNI-010
+Completing linked Task sets Assignment workState = DONE.
+
+UNI-011
+Completing linked Task leaves submissionState = NOT_SUBMITTED.
+
+UNI-012
+Explicit mark-submitted sets:
+submissionState = SUBMITTED
+submittedAt != null
+
+UNI-013
+Exam creation does not auto-create revision Tasks.
+
+UNI-014
+CourseMaterialLink does not duplicate underlying file data.
+
+UNI-015
+User A cannot access User B university records.
+
+UNI-016
+Study Today returns real ClassSession data.
+
+UNI-017
+Home can identify current/next class from real data.
+
+==================================================
+GOLDEN UNIVERSITY JOURNEY
+==================================================
+
+Run via automated E2E or real browser:
+
+1. Login.
+
+2. Open STUDY.
+
+3. Create/verify:
+
+Semester:
+大一上
+
+Course:
+高等数学
+
+4. Create Assignment:
+
+第三章作业
+
+deadline:
+Friday 23:59
+
+5. Verify linked QUEST Task exists.
+
+6. Set Task planned time:
+
+Thursday 19:00.
+
+7. Delay Task to:
+
+Thursday 21:00.
+
+8. Verify:
+
+Task planned time = 21:00
+
+Task dueAt = Friday 23:59
+
+Assignment dueAt = Friday 23:59
+
+9. Teacher changes deadline:
+
+Monday 23:59.
+
+10. Verify:
+
+Assignment dueAt = Monday 23:59
+
+Task dueAt = Monday 23:59
+
+Task planned time remains Thursday 21:00.
+
+11. Complete Task.
+
+12. Verify:
+
+Task = COMPLETED
+
+Assignment workState = DONE
+
+Assignment submissionState = NOT_SUBMITTED
+
+13. STUDY UI must clearly show:
+
+已完成
+未提交
+
+14. Explicitly mark Assignment submitted.
+
+15. Verify:
+
+submissionState = SUBMITTED
+
+submittedAt exists.
+
+16. Reload.
+
+17. State persists.
+
+18. Second user cannot access records.
+
+==================================================
+VISUAL REQUIREMENT
+==================================================
+
+Preserve the accepted LIFE HUD design.
+
+Do not turn STUDY into a generic admin CRUD interface.
+
+Use existing:
+
+AppShell
+GlassCard
+HUDCard
+SectionHeader
+StatusChip
+ActionButton
+EmptyState
+
+and design tokens.
+
+University functionality must look native to LIFE HUD.
+
+==================================================
+DO NOT IMPLEMENT YET
+==================================================
+
+Do NOT implement:
+
+full Files knowledge system
+LearningRecord
+LearningMistake UI
+Skills
+STATUS
+Lim action execution
+Memory
+Archive
+full Attention Engine
+advanced review system
+BOSS readiness
+GPA analytics
+automatic revision planning
+SOCIAL
+WALLET
+Bridge
+Night Voyage
+
+Strictly control scope.
+
+==================================================
+LOCAL ONLY
+==================================================
+
+Public deployment remains OUT OF SCOPE.
+
+Do not touch deployment infrastructure unless needed to keep local development working.
+
+==================================================
+ACCEPTANCE
+==================================================
+
+PHASE 3 is complete when:
+
+1. Semester is real persisted data.
+
+2. Course is real persisted data.
+
+3. ClassSession powers real STUDY timetable.
+
+4. Assignment is real persisted data.
+
+5. Assignment creates/links a real QUEST Task.
+
+6. Assignment != Task is enforced structurally.
+
+7. DONE != SUBMITTED is enforced structurally.
+
+8. Task delay never changes Assignment deadline.
+
+9. Assignment deadline change updates Task hard deadline
+without changing Task planned time.
+
+10. Task completion updates Assignment work state
+without marking it submitted.
+
+11. explicit submission works.
+
+12. Exam exists independently of prep Tasks.
+
+13. authorization tests pass.
+
+14. STUDY reads real database data.
+
+15. HOME can read real class context.
+
+16. reload persists everything.
+
+17. accepted visual shell remains intact.
+
+18. build passes.
+
+19. typecheck passes.
+
+20. automated tests pass.
+
+21. browser/E2E Golden University Journey passes.
+
+==================================================
+FINAL REPORT
+==================================================
+
+At completion report concisely:
+
+- University resources/tables created
+- Assignment ↔ Task architecture
+- DONE vs SUBMITTED behavior
+- deadline synchronization behavior
+- STUDY real-data behavior
+- HOME class integration
+- authorization results
+- automated tests
+- browser/E2E result
+- what zcode handled
+- unresolved issues
+
+Commit the phase safely.
+
+Then STOP.
+
+Do NOT begin STATUS/GROWTH automatically.

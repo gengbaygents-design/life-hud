@@ -1,0 +1,1041 @@
+Proceed to PHASE 6 — HOME + ATTENTION ENGINE.
+
+PHASE 5 — LIM CORE has passed acceptance.
+
+Preserve all working domains and Lim architecture.
+
+Do NOT redesign:
+- QUEST
+- STUDY
+- STATUS
+- GROWTH
+- Lim action system
+- existing LIFE HUD visual shell
+
+This phase is about ATTENTION ORCHESTRATION.
+
+==================================================
+TOKEN / LOCAL MODEL POLICY
+==================================================
+
+Continue conserving Codex usage.
+
+Use:
+1. zcode
+2. authorized local fallback model such as Qoder
+3. Codex only for architecture/correctness work
+
+Delegate repetitive work:
+- aggregator DTOs
+- fixtures
+- test expansion
+- UI data binding
+- cards
+- mapping functions
+- responsive cleanup
+- lint/type cleanup
+
+Codex personally owns:
+- Attention Engine rules
+- cross-domain precedence
+- recommendation semantics
+- privacy boundaries
+- HOME contract
+- Lim recommendation integration
+- final review
+
+==================================================
+PHASE GOAL
+==================================================
+
+Turn HOME into LIFE HUD's real attention cockpit.
+
+Canonical principle:
+
+"HOME tells you what matters now.
+Bridge helps you think and act on it."
+
+HOME is NOT:
+- a feed
+- a productivity guilt dashboard
+- a second database
+- a giant summary of everything
+- an engagement surface
+
+HOME is an aggregator.
+
+Source domains remain authoritative.
+
+==================================================
+CORE ARCHITECTURE
+==================================================
+
+Use this direction:
+
+Domain Context Providers
+→ HOME Aggregator
+→ Attention Engine
+→ HOME View Model
+
+Do NOT let HOME directly own or mutate source-domain state.
+
+Existing domains provide concise context candidates.
+
+HOME decides which deserve attention.
+
+==================================================
+CONTEXT PROVIDERS
+==================================================
+
+Build provider-style aggregation from existing domains.
+
+Initial providers:
+
+QUEST
+University / STUDY
+STATUS
+Voyage
+Project context
+important system alerts where already available
+
+Each provider should return concise structured data.
+
+Conceptual candidate shape:
+
+{
+  type,
+  title,
+  urgency,
+  importance,
+  timing,
+  estimatedMinutes,
+  state,
+  suggestedAction,
+  reason,
+  sourceRef
+}
+
+Do NOT pass giant DB objects into HOME.
+
+==================================================
+ATTENTION ENGINE V1
+==================================================
+
+Implement deterministic rule-based Attention Engine.
+
+NO LLM required.
+
+NO ML.
+
+NO fake numeric priority shown to user.
+
+Internal scoring/ranking may exist,
+but user-facing explanation must be natural.
+
+Consider factors such as:
+
+- hard deadline urgency
+- current real-world event
+- planned-now relevance
+- importance
+- estimated duration fit
+- status / energy fit
+- task dependency availability
+- interruption cost
+- explicit user intent
+- current time of day
+
+Keep rules understandable and testable.
+
+==================================================
+CORE PRECEDENCE PRINCIPLE
+==================================================
+
+REAL CURRENT CONTEXT may outrank a task.
+
+Example:
+
+Current time:
+14:20
+
+Class:
+14:00–15:35
+计算机思维与人工智能基础
+
+HOME should NOT primarily tell the user:
+
+“现在开始35分钟高数作业。”
+
+The user is already in class.
+
+Prefer:
+
+CURRENT
+计算机思维与人工智能基础
+至 15:35
+
+NEXT AFTER CLASS
+拿快递 / 高数作业
+
+depending on actual data.
+
+==================================================
+HARD DEADLINE PRINCIPLE
+==================================================
+
+A real hard deadline matters.
+
+Example:
+
+20:30
+
+高数第三章作业
+
+due:
+23:59
+
+estimated:
+35 min
+
+Expected HOME NEXT:
+
+高数第三章作业
+
+Reason:
+
+今晚截止，预计35分钟。
+
+Do not hide hard reality merely because a gentler task exists.
+
+==================================================
+LATE NIGHT PRINCIPLE
+==================================================
+
+Example A:
+
+00:40
+
+No hard deadlines.
+Several SHOULD/OPTIONAL tasks remain.
+
+Expected:
+
+今晚没有必须处理的事。
+
+Do NOT show:
+
+“还有5项未完成。”
+
+Do NOT manufacture guilt.
+
+--------------------------------------------------
+Example B
+--------------------------------------------------
+
+00:40
+
+A hard deadline exists at 01:00.
+
+Expected:
+
+show the urgent item.
+
+Quiet/night UX must not hide reality.
+
+==================================================
+EMPTY STATE
+==================================================
+
+A true empty state is valid.
+
+Examples:
+
+此刻，可以留白。
+
+今天没有必须处理的事。
+
+Do NOT automatically generate:
+- 学习任务
+- 整理资料
+- 复盘
+- 自我提升建议
+
+just to fill HOME.
+
+Silence is legitimate product behavior.
+
+==================================================
+HOME OUTPUT CONTRACT
+==================================================
+
+HOME should return a compact view model.
+
+Conceptually:
+
+{
+  currentContext,
+  nextAction,
+  fallbackAction,
+  todayItems,
+  statusSnapshot,
+  voyageSnapshot,
+  alerts
+}
+
+Not every field needs content.
+
+HOME should remain quiet when little matters.
+
+==================================================
+NEXT
+==================================================
+
+HOME may show:
+
+ONE primary NEXT.
+
+Not five.
+
+The primary NEXT may be:
+
+Task
+Current Class
+Upcoming Class
+Urgent Assignment state
+important immediate life action
+
+depending on context.
+
+==================================================
+FALLBACK
+==================================================
+
+Maintain at most one useful fallback where appropriate.
+
+Example:
+
+Primary:
+高数第三章作业
+
+Fallback:
+英语阅读 · 20分钟
+
+Do NOT expose a giant ranked list on HOME.
+
+QUEST owns the larger task list.
+
+==================================================
+TODAY
+==================================================
+
+TODAY should combine only useful current-day context.
+
+Possible items:
+
+classes
+planned tasks
+hard deadlines
+
+Keep it compact.
+
+Do not duplicate QUEST or full STUDY pages.
+
+==================================================
+STATUS SNAPSHOT
+==================================================
+
+HOME may display a compact latest status.
+
+Example:
+
+平静 · 精力 3/5
+
+If no recent status:
+
+show nothing or a quiet capture affordance.
+
+Do NOT nag.
+
+==================================================
+ENERGY FIT
+==================================================
+
+Use STATUS only as a soft factor.
+
+Example:
+
+Energy = 1/5
+
+Candidates:
+
+20min 英语阅读
+
+90min 复杂 LIFE HUD architecture work
+
+The engine may prefer the shorter task
+IF no harder urgency overrides it.
+
+But STATUS must never:
+
+- automatically delete work
+- silently reschedule tasks
+- make medical claims
+- override explicit user intent
+
+It is advice context, not control.
+
+==================================================
+VOYAGE SNAPSHOT
+==================================================
+
+HOME may show a small current Voyage marker.
+
+Example:
+
+University Voyage · Year 1
+
+Keep subtle.
+
+Do not create:
+- percentage completion
+- XP
+- route score
+- life progress %
+
+Voyage is context, not gamification.
+
+==================================================
+PROJECT CONTEXT
+==================================================
+
+Projects may influence recommendation reasoning.
+
+Example:
+
+Task:
+整理 LIFE HUD 架构
+
+Project:
+LIFE HUD · Project #001
+
+But HOME should not become a project dashboard.
+
+==================================================
+LIM INTEGRATION
+==================================================
+
+The natural-language query:
+
+“我现在干嘛？”
+
+should reuse the SAME Attention Engine.
+
+Do NOT implement a separate recommendation brain inside Lim.
+
+Architecture:
+
+User asks Lim
+→ QUERY_CURRENT_CONTEXT / Attention service
+→ one primary recommendation
+→ optional fallback
+→ Lim explains naturally
+
+The recommendation should be based on real HOME/Attention data.
+
+==================================================
+EXAMPLE LIM RESPONSE
+==================================================
+
+User:
+
+“我现在干嘛？”
+
+Possible result:
+
+“先做高数第三章作业。
+今晚截止，预计35分钟。
+
+如果现在实在不想碰它，第二选择是20分钟英语阅读。”
+
+Do not include:
+
+priority score: 87.42
+energy coefficient
+ranking algorithm details
+
+==================================================
+EXPLANATION
+==================================================
+
+Attention result should carry a concise reason.
+
+Examples:
+
+今晚截止，预计35分钟。
+
+40分钟后有高数课。
+
+已经到计划时间。
+
+你现在正在上课。
+
+今天没有必须处理的事项。
+
+Do not invent psychological reasoning.
+
+==================================================
+CURRENT CLASS
+==================================================
+
+Use real ClassSession data.
+
+Test:
+
+09:10
+class starts 09:50
+
+HOME may prioritize:
+
+40分钟后 · 高等数学
+
+Do not recommend beginning a 90-minute deep-work task.
+
+==================================================
+CURRENT CLASS IN PROGRESS
+==================================================
+
+Test:
+
+14:20
+
+class:
+14:00–15:35
+
+HOME must recognize:
+
+CURRENT CLASS
+
+Do not treat all time as free task time.
+
+==================================================
+AFTER CLASS
+==================================================
+
+Test:
+
+16:10
+
+planned life task:
+16:00 拿快递
+
+high-math deadline later tonight.
+
+Expected:
+
+NEXT may be 拿快递
+
+because:
+- already planned
+- short
+- currently due
+- can be cleared before later deep work
+
+After completion:
+
+recompute.
+
+NEXT may become high-math assignment.
+
+==================================================
+ATTENTION RECALCULATION
+==================================================
+
+Recalculate after meaningful state changes:
+
+Task complete
+Task delay
+Assignment due change
+class transition
+new StatusMoment
+relevant task creation
+
+Do not require manual full-page refresh where reasonably avoidable.
+
+==================================================
+REAL-TIME / STALE DATA UX
+==================================================
+
+There is known asynchronous Outbox behavior.
+
+Do NOT break the existing outbox architecture merely for instant UI.
+
+But improve user-visible freshness appropriately.
+
+Use one of:
+- immediate local/domain response update
+- query invalidation
+- short revalidation/polling
+- existing event/push mechanism if already clean
+
+Avoid stale HOME after obvious user actions.
+
+Do not introduce unnecessary distributed systems.
+
+==================================================
+DEV CLOCK
+==================================================
+
+Use the existing DEV time mechanism.
+
+Support deterministic testing for:
+
+09:10
+14:20
+16:10
+20:30
+00:40
+
+Dev clock must remain dev-only.
+
+==================================================
+STANDARD DAY FIXTURE
+==================================================
+
+Use deterministic realistic data.
+
+Voyage:
+University Voyage
+
+Courses:
+
+高等数学
+09:50–11:25
+
+计算机思维与人工智能基础
+14:00–15:35
+
+Task:
+
+拿快递
+planned 16:00
+short task
+
+Task / linked Assignment:
+
+高数第三章作业
+planned 20:00
+due 23:59
+estimated 35 min
+MUST
+
+Task:
+
+英语阅读
+estimated 20 min
+SHOULD
+
+Project task:
+
+整理 LIFE HUD 架构
+
+Status:
+
+09:05
+CALM
+energy 3
+
+13:10
+TIRED
+energy 2
+
+==================================================
+EXPECTED HOME — 09:10
+==================================================
+
+Current time:
+09:10
+
+Class:
+09:50 高等数学
+
+Expected:
+
+upcoming class becomes major context.
+
+Do not recommend starting an incompatible long task.
+
+==================================================
+EXPECTED HOME — 14:20
+==================================================
+
+Current:
+
+计算机思维与人工智能基础
+14:00–15:35
+
+Expected:
+
+current class dominates immediate attention.
+
+==================================================
+EXPECTED HOME — 16:10
+==================================================
+
+Expected candidate:
+
+拿快递
+
+because planned time has arrived.
+
+==================================================
+EXPECTED HOME — 20:30
+==================================================
+
+Expected:
+
+高数第三章作业
+
+Reason:
+
+今晚截止，预计35分钟。
+
+Fallback:
+
+英语阅读 · 20分钟
+
+==================================================
+EXPECTED HOME — 00:40
+==================================================
+
+Scenario A:
+
+hard deadline completed.
+
+Expected:
+
+今晚没有必须处理的事。
+
+Scenario B:
+
+01:00 hard deadline remains.
+
+Expected:
+
+show urgent item.
+
+==================================================
+HOME VISUAL REQUIREMENT
+==================================================
+
+Do NOT redesign the visual language yet.
+
+Preserve current HOME style.
+
+But refine hierarchy enough that:
+
+CURRENT
+NEXT
+TODAY
+STATUS
+
+are immediately understandable.
+
+NEXT should remain visually dominant
+when a NEXT exists.
+
+If current Class dominates,
+CURRENT may temporarily become the dominant card.
+
+==================================================
+MOBILE HOME
+==================================================
+
+Keep:
+
+greeting / subtle atmosphere
+NEXT or CURRENT
+今日安排
+STATUS
+Lim entry
+
+Do not increase density.
+
+==================================================
+DESKTOP HOME
+==================================================
+
+Use the existing desktop shell.
+
+Preferred layout:
+
+upper-left:
+Today / schedule
+
+center:
+NEXT or CURRENT focus
+
+right:
+Lim presence / brief
+
+lower:
+status / voyage / secondary context
+
+No requirement to perfectly finalize visual polish yet.
+
+==================================================
+ATTENTION ENGINE MUST NOT MUTATE
+==================================================
+
+Attention Engine is READ / RECOMMENDATION logic.
+
+It must NOT silently:
+
+reschedule Tasks
+change deadlines
+drop Tasks
+create Tasks
+modify STATUS
+change Assignment states
+
+It recommends.
+
+User or explicit Lim Action executes.
+
+==================================================
+PRIVACY
+==================================================
+
+HOME Attention does not get unrestricted access to sensitive data.
+
+Cycle / HIGH_PRIVATE content:
+
+must not influence ordinary HOME recommendation unless
+explicit future policy allows it.
+
+Do not weaken existing privacy.
+
+==================================================
+REQUIRED TESTS
+==================================================
+
+HOME-001
+HOME reads real domain providers.
+
+HOME-002
+HOME does not own duplicate Task/Assignment data.
+
+HOME-003
+current ClassSession outranks incompatible long Task.
+
+HOME-004
+upcoming class affects time-fit recommendation.
+
+HOME-005
+hard same-day deadline receives appropriate priority.
+
+HOME-006
+planned-now short task can outrank later deadline task when sensible.
+
+HOME-007
+after completion, recommendation recalculates.
+
+HOME-008
+low energy may influence fit but does not override hard urgency.
+
+HOME-009
+empty state is valid.
+
+HOME-010
+late-night non-urgent unfinished tasks do not produce guilt state.
+
+HOME-011
+late-night true hard deadline remains visible.
+
+HOME-012
+HIGH_PRIVATE cycle data is excluded.
+
+HOME-013
+Lim “我现在干嘛？” reuses Attention Engine.
+
+HOME-014
+Lim gets one primary recommendation + max one fallback.
+
+HOME-015
+no user-visible fake numeric score.
+
+HOME-016
+Attention Engine performs no mutation.
+
+HOME-017
+DEV clock produces deterministic results.
+
+==================================================
+GOLDEN ATTENTION JOURNEY
+==================================================
+
+Use STANDARD_DAY fixture.
+
+Test DEV_NOW = 09:10.
+
+Verify:
+高数 upcoming context.
+
+Set DEV_NOW = 14:20.
+
+Verify:
+current AI class.
+
+Set DEV_NOW = 16:10.
+
+Verify:
+拿快递 is sensible NEXT.
+
+Complete 拿快递.
+
+Verify:
+HOME recalculates.
+
+Set DEV_NOW = 20:30.
+
+Verify:
+高数第三章作业 is primary NEXT.
+
+Verify reason:
+今晚截止，预计35分钟 or equivalent.
+
+Verify fallback:
+英语阅读.
+
+Ask Lim:
+
+“我现在干嘛？”
+
+Verify Lim uses the same recommendation,
+not a separate guessed answer.
+
+Complete/submit urgent work.
+
+Set DEV_NOW = 00:40.
+
+Verify:
+quiet state.
+
+Add a hard 01:00 deadline.
+
+Verify:
+urgent item appears.
+
+==================================================
+DO NOT IMPLEMENT
+==================================================
+
+Do NOT implement:
+
+long-term Memory consolidation
+Archive intelligence
+Reminder engine
+semantic search
+Bridge
+Night Voyage
+voice
+dynamic Lim avatar
+SOCIAL
+WALLET
+advanced reports
+machine-learning recommendations
+
+==================================================
+VISUAL POLISH
+==================================================
+
+Do NOT start the dedicated major Visual Polish Phase yet.
+
+Maintain quality and consistency.
+
+Large visual refinement comes after:
+
+HOME Attention
+basic Reminder
+basic Archive
+
+are working.
+
+==================================================
+LOCAL ONLY
+==================================================
+
+Public deployment remains out of scope.
+
+==================================================
+ACCEPTANCE
+==================================================
+
+PHASE 6 is complete when:
+
+1. HOME uses a real aggregator.
+
+2. domains expose concise context providers.
+
+3. Attention Engine is deterministic.
+
+4. current/upcoming classes affect attention correctly.
+
+5. QUEST tasks affect attention correctly.
+
+6. hard deadlines behave correctly.
+
+7. STATUS may softly affect fit.
+
+8. empty state is valid.
+
+9. late-night quiet behavior works.
+
+10. no sensitive cycle leakage occurs.
+
+11. HOME recalculates after domain changes.
+
+12. Lim “我现在干嘛？” reuses the same engine.
+
+13. one primary + max one fallback is respected.
+
+14. no fake priority score appears.
+
+15. Attention Engine does not mutate domain state.
+
+16. mobile HOME remains clean.
+
+17. desktop HOME works.
+
+18. existing domains regressions pass.
+
+19. build passes.
+
+20. typecheck passes.
+
+21. automated tests pass.
+
+22. Golden Attention Journey passes.
+
+==================================================
+FINAL REPORT
+==================================================
+
+Report concisely:
+
+- HOME aggregation architecture
+- Context Providers
+- Attention Engine rules
+- tested time scenarios
+- Lim integration
+- privacy behavior
+- freshness/revalidation behavior
+- automated tests
+- browser/E2E result
+- zcode/Qoder delegation
+- unresolved issues
+
+Commit safely.
+
+Then STOP.
+
+Do NOT automatically begin Reminder / Archive / Visual Polish.

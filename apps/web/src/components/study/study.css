@@ -1,0 +1,117 @@
+.study-workspace .study-toolbar,
+.study-assignment-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-block: 1rem;
+}
+.study-class-row {
+  display: grid;
+  grid-template-columns: 6.8rem minmax(0, 1fr);
+  gap: 0.6rem 0.9rem;
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--hud-border-soft);
+  font-size: 0.85rem;
+}
+.study-class-state {
+  grid-column: 1 / -1;
+}
+.study-class-state:empty {
+  display: none;
+}
+.study-class-state .status-chip {
+  white-space: nowrap;
+}
+.study-class-time,
+.study-class-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.study-class-time .schedule-date,
+.study-class-title .schedule-place {
+  color: var(--hud-text-secondary);
+  font-size: 0.75rem;
+}
+.study-class-row .schedule-time {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.study-assignment {
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--hud-border-soft);
+}
+.study-assignment h3 {
+  font-size: 1rem;
+  margin-block: 0.5rem;
+}
+.study-assignment .status-chip {
+  margin-inline-end: 0.5rem;
+}
+.study-material {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.study-secondary {
+  margin-top: 1.2rem;
+}
+.study-secondary > summary {
+  cursor: pointer;
+  color: var(--hud-text-secondary);
+  padding: 1rem 0;
+}
+.study-workspace .schedule-item {
+  flex-wrap: wrap;
+  align-items: center;
+}
+.study-workspace .course-item {
+  color: inherit;
+  text-decoration: none;
+}
+.study-workspace .study-grid > section {
+  min-width: 0;
+}
+.study-workspace .task-form {
+  max-height: 60dvh;
+  overflow-y: auto;
+  padding-inline: 2px;
+}
+.study-workspace small {
+  display: block;
+}
+.study-assignment p {
+  overflow-wrap: anywhere;
+}
+.study-workspace .form-field input,
+.study-workspace .form-field select {
+  max-width: 100%;
+}
+
+.study-workspace .study-toolbar {
+  margin-block: 0;
+}
+.study-assignment-course,
+.study-assignment-deadline {
+  font-size: var(--hud-type-meta);
+  color: var(--hud-text-secondary);
+  margin-block: 4px;
+}
+.study-assignment[data-pending-submission='true'] {
+  border-left: 2px solid var(--hud-warning);
+  padding-left: var(--hud-space-3);
+}
+.study-assignment-actions {
+  gap: 4px;
+}
+.study-assignment-actions > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: var(--hud-type-meta);
+  color: var(--hud-accent);
+}
+.study-class-row:first-child {
+  padding-top: 0;
+}

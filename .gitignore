@@ -1,0 +1,32 @@
+# Local agent state, authentication, logs, prompts, drafts and temporary files
+/.local/
+/.pnpm-store/
+/.cache/
+/workbuddy-deploy/
+
+# Credentials and environment files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Future build/dependency output
+node_modules/
+.next/
+.turbo/
+dist/
+build/
+coverage/
+playwright-report/
+test-results/
+
+# Operating system/editor metadata
+.DS_Store
+Thumbs.db
+*.swp
+*.tsbuildinfo
+.output/
+.tanstack/
+.nitro/
+/codex-chat-backup-LIFE-HUD.md

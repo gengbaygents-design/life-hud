@@ -1,0 +1,30 @@
+{
+  "name": "@ship/emails",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build:types": "tsc --emitDeclarationOnly"
+  },
+  "dependencies": {
+    "@react-email/components": "1.0.1",
+    "@react-email/render": "2.0.0",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "resend": "4.5.2"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:",
+    "typescript": "catalog:",
+    "@types/node": "catalog:"
+  }
+}

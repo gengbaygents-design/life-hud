@@ -1,0 +1,51 @@
+packages:
+  - ./apps/*
+  - ./packages/*
+
+catalog:
+  typescript: 5.9.3
+  eslint: 10.12.0
+  prettier: 3.6.2
+
+  zod: 4.6.7
+  lint-staged: 16.1.2
+  react: 19.3.0
+  react-dom: 19.3.0
+  drizzle-orm: 1.0.0-rc.4
+
+  "@types/react": 19.3.0
+  "@types/node": 24.19.2
+  "@types/formidable": 2.0.5
+
+registries:
+  default: https://registry.npmjs.org/
+strictPeerDependencies: true
+saveExact: true
+networkConcurrency: 4
+fetchTimeout: 300000
+fetchRetries: 1
+allowBuilds:
+  esbuild: true
+  msgpackr-extract: true
+  sharp: true
+minimumReleaseAgeExclude:
+  - '@aws-sdk/client-s3@3.1151.0 || 3.1152.0'
+  - '@playwright/test@1.64.1'
+  - '@turbo/darwin-64@2.11.8'
+  - '@turbo/darwin-arm64@2.11.8'
+  - '@turbo/linux-64@2.11.8'
+  - '@turbo/linux-arm64@2.11.8'
+  - '@turbo/windows-64@2.11.8'
+  - '@turbo/windows-arm64@2.11.8'
+  - playwright-core@1.64.1
+  - playwright@1.64.1
+  - turbo@2.11.8
+  - '@aws-sdk/lib-storage@3.1152.0'
+  - '@aws-sdk/s3-request-presigner@3.1152.0'
+
+autoInstallPeers: false
+overrides:
+  ws@^8: 8.21.0
+  postcss-selector-parser: 7.1.6
+  "@ai-sdk/provider-utils@^4": 4.0.33
+  vite: 8.3.4

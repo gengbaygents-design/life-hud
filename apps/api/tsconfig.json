@@ -1,0 +1,20 @@
+{
+  "extends": "tsconfig/nodejs.json",
+  "compilerOptions": {
+    "composite": true,
+    "jsx": "react", // for using Mailer
+    "baseUrl": "src",
+    "rootDir": "src",
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "declaration": true,
+    "declarationMap": true,
+
+    "outDir": "dist",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "node_modules"]
+}

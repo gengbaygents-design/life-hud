@@ -1,0 +1,917 @@
+Proceed to PHASE 2 — LIFE HUD CORE + QUEST.
+
+PHASE 1 shell has passed acceptance.
+
+IMPORTANT:
+
+Preserve the accepted LIFE HUD visual shell.
+
+Do NOT visually redesign HOME, navigation, QUEST shell, STUDY shell,
+or the global Lim entry unless a change is required for real data integration.
+
+From this phase onward:
+replace presentation-only fixture data with real persisted domain data incrementally.
+
+Work quickly and conserve Codex usage.
+
+Use zcode aggressively for:
+- repetitive resource scaffolding
+- repetitive schemas after contracts are fixed
+- endpoint boilerplate
+- repetitive CRUD tests
+- seed data
+- API hook wiring
+- low-risk UI binding
+- lint/type cleanup
+
+Codex personally owns:
+- domain semantics
+- database schema decisions
+- authorization
+- transactions
+- versioning
+- Task scheduling rules
+- domain events
+- cross-domain boundaries
+- final review
+
+==================================================
+PHASE GOAL
+==================================================
+
+Create the first real LIFE HUD domain foundation.
+
+Implement:
+
+CORE:
+- Voyage
+- Project
+- Goal
+- Task
+- EntityLink
+- AuditLog
+- DomainEvent / Outbox foundation
+
+QUEST:
+- real Task persistence
+- NOW
+- TODAY
+- INBOX
+- create
+- edit
+- start
+- complete
+- delay/reschedule
+- drop
+- basic history
+
+By the end of this phase:
+
+HOME and QUEST must display REAL DATABASE DATA.
+
+No fake task fixtures should remain in normal authenticated usage.
+
+==================================================
+SHIP ARCHITECTURE
+==================================================
+
+Use the adopted Ship vertical resource conventions.
+
+Expected resources approximately:
+
+apps/api/src/resources/
+
+  voyages/
+  projects/
+  goals/
+  tasks/
+  entity-links/
+  audit-logs/
+  outbox-events/
+
+Use:
+
+schema
+→ persistence
+
+methods
+→ LIFE HUD business/domain logic
+
+endpoints
+→ transport only
+
+middlewares
+→ authorization / ownership
+
+handlers
+→ domain-event reactions
+
+Do NOT put business logic into React pages.
+
+Do NOT put large business rules directly into endpoint handlers.
+
+==================================================
+OWNER SCOPE
+==================================================
+
+All personal entities are owner-scoped.
+
+Never trust owner_id supplied by the client.
+
+Resolve owner from authenticated server-side identity.
+
+User A must never be able to:
+
+- read
+- update
+- complete
+- delete
+- infer existence of
+
+User B's Task/Voyage/Project/etc.
+
+Unauthorized object access should preferably collapse to NOT_FOUND-style behavior
+where consistent with Ship's security pattern.
+
+==================================================
+VOYAGE
+==================================================
+
+Voyage represents a period of life.
+
+Initial model should support fields conceptually equivalent to:
+
+id
+ownerId
+parentVoyageId nullable
+title
+voyageType
+primaryContext
+status
+startAt
+endAt nullable
+summary nullable
+visualSeed nullable
+version
+createdAt
+updatedAt
+deletedAt where appropriate
+
+Initial statuses should at least support:
+
+ACTIVE
+COMPLETED
+ARCHIVED or equivalent if needed later
+
+Do not overbuild Voyage hierarchy yet.
+
+==================================================
+INITIAL UNIVERSITY VOYAGE
+==================================================
+
+LIFE HUD is university-first.
+
+For a new current MVP user,
+ensure there is a valid active University Voyage.
+
+Example:
+
+University Voyage
+status = ACTIVE
+
+Do not populate fake courses yet.
+
+Voyage is Core.
+Semester comes in the University Pack later.
+
+==================================================
+PROJECT
+==================================================
+
+Project is a long-running body of work.
+
+Initial fields conceptually:
+
+id
+ownerId
+title
+description nullable
+status
+startAt nullable
+endAt nullable
+voyageId nullable
+version
+timestamps
+deletedAt where appropriate
+
+Create development seed/example:
+
+LIFE HUD
+Project #001
+
+This must be real persisted data in dev fixtures.
+
+==================================================
+GOAL
+==================================================
+
+Goal is Core.
+
+Keep it minimal.
+
+Conceptual fields:
+
+id
+ownerId
+title
+description nullable
+status
+horizon nullable
+targetDate nullable
+version
+timestamps
+
+Do not build advanced goal planning UI.
+
+==================================================
+TASK
+==================================================
+
+Task is the central object of this phase.
+
+Initial conceptual fields:
+
+id
+ownerId
+
+title
+description nullable
+
+status
+importance
+
+plannedStart nullable
+plannedEnd nullable
+
+dueAt nullable
+
+estimatedMinutes nullable
+actualMinutes nullable
+
+projectId nullable
+
+sourceType nullable
+sourceId nullable
+
+completedAt nullable
+
+version
+
+createdAt
+updatedAt
+deletedAt nullable
+
+==================================================
+CRITICAL TASK INVARIANT
+==================================================
+
+PLANNED TIME != DEADLINE
+
+These are different concepts.
+
+Example:
+
+Task:
+高数第三章作业
+
+plannedStart:
+Thursday 19:00
+
+dueAt:
+Friday 23:59
+
+If the user delays execution to Thursday 21:00:
+
+plannedStart changes.
+
+dueAt MUST remain Friday 23:59.
+
+Never silently move a deadline because planned execution changed.
+
+Add explicit tests proving this.
+
+==================================================
+TASK STATUS
+==================================================
+
+Use an initial lifecycle equivalent to:
+
+INBOX
+PLANNED
+ACTIVE
+COMPLETED
+DELAYED
+DROPPED
+
+Do not add moralizing FAILED semantics.
+
+DELAYED may represent action/history semantics if the implementation prefers
+returning the task to PLANNED afterward.
+
+Choose a clean model,
+but preserve the product meaning.
+
+==================================================
+TASK ACTIONS
+==================================================
+
+Implement explicit domain methods/actions for meaningful behavior.
+
+Examples:
+
+createTask
+updateTask
+startTask
+completeTask
+delayTask
+dropTask
+
+Do not rely only on one giant generic PATCH endpoint.
+
+Meaningful business verbs should have explicit methods/endpoints where appropriate.
+
+This will later allow Lim to use exactly the same Domain methods.
+
+==================================================
+OPTIMISTIC VERSIONING
+==================================================
+
+Important mutable records must support optimistic concurrency.
+
+Example:
+
+stored version = 3
+
+client updates expecting version = 2
+
+Result:
+
+CONFLICT
+
+Do NOT silently overwrite.
+
+Implement this at least for Task.
+
+Prefer patterns reusable by future important entities.
+
+==================================================
+SOFT DELETE
+==================================================
+
+Tasks and important life records should default to soft delete where practical.
+
+Normal queries must omit deleted records.
+
+Do NOT implement the full future privacy hard-delete system yet.
+
+Leave architecture compatible with it.
+
+==================================================
+ENTITY LINK
+==================================================
+
+EntityLink represents semantic relationships between LIFE HUD objects.
+
+Initial conceptual fields:
+
+id
+ownerId
+
+fromType
+fromId
+
+relationType
+
+toType
+toId
+
+metadata nullable
+
+createdAt
+updatedAt
+
+Do not create a graph database.
+
+PostgreSQL remains authoritative.
+
+Example relationships:
+
+Task
+--BELONGS_TO / RELATED_TO-->
+Project
+
+Future examples may include:
+
+LearningRecord -> Project
+Task -> Exam
+CaptainLog -> Project
+
+Do not implement those future domains now.
+
+==================================================
+AUDIT LOG
+==================================================
+
+Record meaningful changes.
+
+At minimum this phase should audit:
+
+Task creation
+Task completion
+Task delay
+Task drop
+important Task updates
+
+Do not log every UI click.
+
+Audit should answer:
+
+who
+did what
+to which entity
+when
+
+Leave room for before/after metadata where useful.
+
+==================================================
+DOMAIN EVENTS / OUTBOX
+==================================================
+
+Implement a minimal reliable Domain Event /
+Transactional Outbox foundation.
+
+Important events this phase:
+
+TaskCreated
+TaskCompleted
+TaskDelayed
+
+Relevant domain write + outbox event must be transactionally consistent.
+
+Do NOT introduce Kafka.
+Do NOT introduce microservices.
+Do NOT introduce BullMQ.
+
+Use the existing local stack.
+
+We need the event architecture,
+not enterprise infrastructure.
+
+==================================================
+QUEST UI
+==================================================
+
+Turn the existing QUEST shell into a real working module.
+
+Mobile priority:
+
+NOW
+TODAY
+INBOX
+
+Do not create a dense desktop project-management application.
+
+QUEST's question is:
+
+“What is most worth doing now?”
+
+==================================================
+QUEST — NOW
+==================================================
+
+Implement deterministic rule-based recommendation v0.
+
+NO LLM.
+NO ML.
+NO fake numeric priority score.
+
+Candidate factors may include:
+
+- deadline urgency
+- planned-now relevance
+- importance
+- estimated duration fit
+- dependency availability
+
+Keep the algorithm explainable.
+
+Return a small candidate set.
+
+QUEST NOW should emphasize:
+
+one recommended task
+
+with optional alternate candidates.
+
+==================================================
+换一个
+==================================================
+
+If UI supports:
+
+换一个
+
+this means:
+
+show another suitable candidate.
+
+It MUST NOT:
+
+delete the previous Task
+drop it
+reduce importance
+record it as failure
+change its deadline
+
+It means only:
+
+“not this one right now.”
+
+==================================================
+EMPTY STATE
+==================================================
+
+If no meaningful actionable Task exists:
+
+QUEST must be allowed to say so.
+
+Example:
+
+今天没有必须处理的事。
+
+Do NOT manufacture productivity tasks.
+
+Do NOT automatically tell the user to:
+
+整理资料
+复盘
+学习
+优化人生
+
+just because the list is empty.
+
+Silence is valid.
+
+==================================================
+TODAY
+==================================================
+
+TODAY should show relevant Tasks for today based on:
+
+planned execution
+hard deadlines
+active state
+
+Keep information hierarchy clean.
+
+Do not turn all historical/inbox Tasks into Today clutter.
+
+==================================================
+INBOX
+==================================================
+
+INBOX stores uncategorized/new Tasks.
+
+Creating a Task without a planned time or deadline can legally enter INBOX.
+
+The user should not be forced to fully schedule every captured thought.
+
+==================================================
+TASK CREATION UI
+==================================================
+
+Keep creation lightweight.
+
+Required:
+
+title
+
+Optional:
+description
+planned time
+deadline
+importance
+estimate
+project
+
+Do not force every optional field.
+
+Natural-language capture through Lim comes later.
+
+==================================================
+HOME INTEGRATION
+==================================================
+
+HOME may now start consuming real Task data.
+
+Do NOT implement the full Attention Engine yet.
+
+For this phase:
+
+replace fake NEXT Task fixture with the current top QUEST candidate.
+
+If no candidate exists:
+
+show a valid quiet empty state.
+
+Do not implement complex STATUS/event/energy awareness yet.
+
+==================================================
+REALISTIC DEV SEED
+==================================================
+
+Use stable, meaningful dev data.
+
+Example:
+
+Voyage:
+University Voyage
+
+Project:
+LIFE HUD · Project #001
+
+Tasks:
+
+高数第三章作业
+status = PLANNED
+estimated = 35m
+
+整理 LIFE HUD 架构
+linked to LIFE HUD Project #001
+
+英语阅读
+estimated = 20m
+
+下午拿快递
+
+已完成:
+整理 HOME 视觉方向
+
+Do not use:
+
+Task 1
+Test Project
+Lorem Ipsum
+
+Prefer deterministic development IDs/seed behavior where helpful for tests.
+
+==================================================
+DO NOT IMPLEMENT YET
+==================================================
+
+Do NOT implement:
+
+Semester
+Course
+Assignment
+Exam
+Grade
+
+STATUS
+
+Learning Records
+Skills
+
+Lim Action execution
+
+Memory
+
+Archive
+
+Reminder engine
+
+full Attention Engine
+
+SOCIAL
+
+WALLET
+
+Bridge
+
+Night Voyage
+
+Do not prematurely create tables for future domains.
+
+==================================================
+TESTS — REQUIRED
+==================================================
+
+Implement real automated tests.
+
+At minimum:
+
+CORE-001
+Authenticated user can create own Task.
+
+CORE-002
+User A cannot access User B Task.
+
+QUEST-001
+Task creation persists after reload/API refetch.
+
+QUEST-002
+plannedStart and dueAt are independent.
+
+QUEST-003
+delayTask changes plannedStart but does not change dueAt.
+
+QUEST-004
+completeTask sets:
+status = COMPLETED
+completedAt != null
+
+QUEST-005
+TaskCompleted event/outbox record is produced.
+
+QUEST-006
+meaningful AuditLog is produced.
+
+QUEST-007
+version conflict does not silently overwrite.
+
+QUEST-008
+soft-deleted Task is omitted from ordinary queries.
+
+QUEST-009
+NOW can return a sensible candidate.
+
+QUEST-010
+NOW may return empty state.
+
+QUEST-011
+换一个 does not mutate the skipped Task.
+
+QUEST-012
+HOME reads a real QUEST candidate,
+not static fixture text.
+
+==================================================
+MANUAL ACCEPTANCE JOURNEY
+==================================================
+
+Perform this manually or via browser E2E:
+
+1. Log into LIFE HUD.
+
+2. Create:
+
+高数第三章作业
+
+planned:
+today 20:00
+
+deadline:
+today 23:59
+
+estimate:
+35 min
+
+3. Verify it appears in QUEST.
+
+4. Verify HOME NEXT uses real persisted Task data.
+
+5. Delay it to 21:00.
+
+6. Verify:
+
+planned time = 21:00
+
+deadline = 23:59
+
+7. Complete it.
+
+8. Verify:
+
+Task status = COMPLETED
+completedAt exists
+
+9. Reload LIFE HUD.
+
+10. Verify state remains.
+
+11. Log in as another test user.
+
+12. Verify they cannot access the first user's Task.
+
+==================================================
+VISUAL REQUIREMENT
+==================================================
+
+Preserve PHASE 1 visual quality.
+
+Do not replace the accepted LIFE HUD interface with raw CRUD tables.
+
+Business functionality must enter through the existing visual language.
+
+Use the existing:
+
+GlassCard
+HUDCard
+AppShell
+navigation
+tokens
+
+and related components.
+
+Do not substantially redesign HOME.
+
+==================================================
+LOCAL ONLY
+==================================================
+
+Public deployment remains OUT OF SCOPE.
+
+Do not spend time on:
+
+DNS
+hosting
+public OAuth
+cloud deployment
+Kubernetes
+production infrastructure
+
+Everything should work locally.
+
+==================================================
+ACCEPTANCE
+==================================================
+
+PHASE 2 is complete when:
+
+1. Voyage is real persisted data.
+
+2. LIFE HUD Project #001 can exist as real Project data.
+
+3. Tasks are real persisted records.
+
+4. QUEST uses real data.
+
+5. HOME NEXT uses real QUEST data.
+
+6. Create works.
+
+7. Edit works.
+
+8. Start works.
+
+9. Complete works.
+
+10. Delay works.
+
+11. Drop works.
+
+12. planned time and deadline remain separate.
+
+13. ownership isolation passes.
+
+14. optimistic conflict handling passes.
+
+15. AuditLog foundation works.
+
+16. Domain Event / Outbox foundation works.
+
+17. TaskCreated / TaskCompleted / TaskDelayed behavior works.
+
+18. reload preserves state.
+
+19. existing LIFE HUD shell remains visually intact.
+
+20. build passes.
+
+21. typecheck passes.
+
+22. tests pass.
+
+==================================================
+FINAL REPORT
+==================================================
+
+At completion report concisely:
+
+- resources/tables created
+- Task lifecycle implemented
+- QUEST behavior
+- HOME real-data integration
+- Voyage/Project status
+- Audit/Outbox status
+- authorization tests
+- automated test results
+- manual/E2E journey result
+- what zcode handled
+- any unresolved issue
+
+Commit the completed phase safely.
+
+Then STOP.
+
+Do not begin University/STUDY automatically.

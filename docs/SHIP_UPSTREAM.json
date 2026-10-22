@@ -1,0 +1,19 @@
+{
+  "repository": "https://github.com/paralect/ship",
+  "commit": "3374e79a5deebbd017ab734a4968e8be224dc239",
+  "license": "MIT",
+  "plugins": [
+    "postgres",
+    "mailer",
+    "cloud-storage",
+    "auth-starter",
+    "ai-chat"
+  ],
+  "method": "Pinned template + plugin merge semantics adapted for Windows, manually reviewed",
+  "excluded": [
+    "admin",
+    "notes",
+    "mongo",
+    "public deployment"
+  ]
+}

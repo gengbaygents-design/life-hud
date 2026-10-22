@@ -1,0 +1,180 @@
+.phase7-page {
+  max-width: 1100px;
+}
+.phase7-tabs,
+.phase7-row {
+  display: flex;
+  gap: var(--hud-space-3);
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+.phase7-list {
+  display: grid;
+  gap: var(--hud-space-4);
+  margin: 1.5rem 0;
+}
+.phase7-form {
+  display: grid;
+  gap: var(--hud-space-4);
+  min-width: 0;
+}
+.phase7-form label {
+  display: grid;
+  gap: 0.45rem;
+  min-width: 0;
+  font-size: 0.88rem;
+  color: var(--hud-text-secondary);
+}
+.phase7-form input,
+.phase7-form textarea,
+.phase7-form select,
+.phase7-controls input,
+.phase7-controls select {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--hud-border-strong);
+  border-radius: var(--hud-radius-md);
+  background: var(--hud-surface);
+  color: var(--hud-text-primary);
+  box-sizing: border-box;
+  font: inherit;
+}
+.phase7-form textarea {
+  min-height: 220px;
+  resize: vertical;
+  line-height: 1.8;
+}
+.phase7-form .phase7-check {
+  display: flex;
+  align-items: center;
+}
+.phase7-check input {
+  width: auto;
+}
+.phase7-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.8rem;
+  margin: 1.5rem 0;
+}
+.phase7-controls label {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 130px;
+  max-width: 100%;
+  flex: 1;
+}
+.phase7-controls .phase7-check {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-basis: 100%;
+}
+.phase7-check input[type='checkbox'] {
+  width: auto;
+}
+.history-card header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  font-size: var(--hud-type-meta);
+  color: var(--hud-text-secondary);
+}
+.history-card h3,
+.reminder-card h3 {
+  font-size: var(--hud-type-card);
+  font-weight: 500;
+  margin: 0.8rem 0;
+  overflow-wrap: anywhere;
+}
+.history-card p {
+  overflow-wrap: anywhere;
+  line-height: 1.85;
+  margin: 1rem 0;
+}
+.history-card ul {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0;
+  list-style: none;
+}
+.reminder-card p {
+  margin: 0.6rem 0;
+}
+.phase7-prose {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.85;
+}
+.phase7-filter-label {
+  color: var(--hud-text-secondary);
+  font-size: 0.8rem;
+}
+.phase7-row > label {
+  flex: 1;
+}
+.phase7-source-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.phase7-advanced {
+  flex-basis: 100%;
+  color: var(--hud-text-secondary);
+  font-size: 0.85rem;
+}
+.phase7-advanced summary {
+  cursor: pointer;
+  padding: 0.5rem 0;
+}
+.phase7-advanced .phase7-row {
+  margin: 0.5rem 0;
+}
+.phase7-advanced .phase7-check {
+  flex-basis: 100%;
+}
+
+.phase7-form :is(input, select),
+.phase7-controls :is(input, select) {
+  min-height: 44px;
+}
+.phase7-check input[type='checkbox'] {
+  min-height: auto;
+}
+.glass-card.history-card {
+  border: 0;
+  border-left: 1px solid var(--hud-border-strong);
+  border-radius: 0;
+  background: transparent;
+  padding-block: 12px;
+}
+.history-card p {
+  font-size: var(--hud-type-body);
+  max-width: 70ch;
+}
+.phase7-advanced summary {
+  min-height: 44px;
+}
+.phase7-tabs .action-button {
+  border-radius: var(--hud-radius-sm);
+}
+.glass-card.reminder-card {
+  padding: var(--hud-space-4);
+  background: transparent;
+  border-inline: 0;
+  border-top: 0;
+  border-radius: 0;
+}
+.reminder-card h3 {
+  margin-block: 4px;
+}
+.reminder-card p {
+  font-size: var(--hud-type-meta);
+}
+.phase7-form textarea {
+  font-size: 16px;
+}

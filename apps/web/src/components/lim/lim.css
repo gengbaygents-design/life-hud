@@ -1,0 +1,162 @@
+.lim-conversation {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+.lim-conversation-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.lim-conversation-tools label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--hud-text-secondary);
+  font-size: var(--hud-type-meta);
+  min-width: 0;
+  white-space: nowrap;
+  flex: 1;
+}
+.lim-conversation select {
+  width: 0;
+  flex: 1;
+  max-width: 210px;
+  min-width: 0;
+  min-height: 44px;
+  background: transparent;
+  border: 1px solid var(--hud-border-soft);
+  border-radius: var(--hud-radius-sm);
+  padding: 8px;
+  color: var(--hud-text-primary);
+}
+.lim-log-scroll {
+  overflow-y: auto;
+  min-height: 70px;
+  flex: 1;
+  overscroll-behavior: contain;
+  padding: 4px 1px 12px;
+}
+.lim-messages {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hud-space-5);
+}
+.lim-empty {
+  color: var(--hud-text-secondary);
+  padding: var(--hud-space-5) 0;
+  line-height: 2;
+  font-size: var(--hud-type-body);
+}
+.lim-message {
+  max-width: 95%;
+  border-radius: var(--hud-radius-md);
+  padding: 12px 14px;
+  min-width: 0;
+}
+.lim-message[data-role='user'] {
+  align-self: flex-end;
+  background: var(--hud-accent-soft);
+  border: 1px solid var(--hud-border-soft);
+}
+.lim-message[data-role='assistant'] {
+  align-self: flex-start;
+  padding-inline: 2px;
+}
+.lim-message > small {
+  color: var(--hud-text-muted);
+  font-size: var(--hud-type-micro);
+}
+.lim-message p {
+  margin: 6px 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: var(--hud-type-body);
+  line-height: 1.85;
+}
+.lim-message .lim-receipt {
+  display: block;
+  margin-top: 8px;
+  color: var(--hud-text-secondary);
+}
+.lim-message button {
+  font-size: var(--hud-type-meta);
+  border: 1px solid var(--hud-border-soft);
+  border-radius: var(--hud-radius-sm);
+  padding: 8px 12px;
+  margin-top: 8px;
+  min-height: 44px;
+  cursor: pointer;
+  color: var(--hud-accent);
+}
+.lim-provider-note,
+.lim-busy {
+  color: var(--hud-text-secondary);
+  font-size: var(--hud-type-micro);
+}
+.lim-source-label {
+  margin: 0;
+  color: var(--hud-text-muted);
+  font-size: var(--hud-type-micro);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+}
+.lim-composer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--hud-border-soft);
+}
+.lim-composer textarea {
+  resize: vertical;
+  min-height: 72px;
+  max-height: min(180px, 25dvh);
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  border: 1px solid var(--hud-border-strong);
+  border-radius: var(--hud-radius-md);
+  padding: 12px;
+  background: var(--hud-surface);
+  color: var(--hud-text-primary);
+  font: inherit;
+  font-size: 16px;
+}
+.lim-share {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-basis: 100%;
+  font-size: var(--hud-type-micro);
+  color: var(--hud-text-secondary);
+}
+.lim-panel:has(.lim-conversation)[data-slot='sheet-content'] {
+  overflow: hidden;
+}
+@media (max-height: 650px) {
+  .lim-panel[data-slot='sheet-content'] {
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    gap: 6px;
+    padding-top: 12px;
+  }
+  .lim-panel > [data-slot='sheet-description'],
+  .lim-panel .card-kicker {
+    display: none;
+  }
+  .lim-empty {
+    padding-block: 8px;
+  }
+}

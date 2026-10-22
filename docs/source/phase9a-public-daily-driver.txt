@@ -1,0 +1,540 @@
+Proceed to PHASE 9A — PUBLIC DAILY DRIVER DEPLOYMENT VIA LOCAL WORKBUDDY.
+
+PHASE 8 — VISUAL POLISH v1 has passed runtime verification.
+
+We are now making LIFE HUD available online so the user can use it
+from both Windows and iPhone without requiring the devices to share a network.
+
+IMPORTANT:
+
+Use the WorkBuddy software/tool already installed on this Windows computer
+as the deployment mechanism.
+
+Do NOT introduce Railway, Vercel, Fly.io, Render, or another hosting provider
+unless WorkBuddy is proven incapable of deploying the required LIFE HUD stack
+and you explicitly report the blocker first.
+
+==================================================
+PRIMARY GOAL
+==================================================
+
+Deploy the existing LIFE HUD as a real private/personal online Daily Driver.
+
+The deployed version must support:
+
+- HOME
+- QUEST
+- STUDY
+- STATUS
+- GROWTH
+- LIM
+- REMINDERS
+- ARCHIVE
+- authentication
+- persistent data
+- file storage
+- scheduler/reminders
+
+The user must be able to open the deployed LIFE HUD from iPhone over mobile data.
+
+==================================================
+STEP 1 — PROTECT CURRENT WORK
+==================================================
+
+Before deployment changes:
+
+1. Confirm the current git working tree state.
+2. Preserve the working PHASE 8 version.
+3. Create a safe commit/branch if needed.
+4. Do not destroy the working local development environment.
+
+Local development must continue to work after deployment.
+
+==================================================
+STEP 2 — INSPECT WORKBUDDY
+==================================================
+
+Inspect the Windows computer and determine exactly how the installed WorkBuddy is used.
+
+Look for, as appropriate:
+
+- installed application
+- CLI
+- executable
+- local documentation
+- configuration
+- deployment commands
+- integrations
+- project import mechanisms
+- supported runtime types
+- environment-variable support
+- persistent database/storage support
+- custom/public URL support
+- service/background-worker support
+
+Do NOT invent WorkBuddy commands.
+
+Use only functionality actually available on this machine.
+
+If WorkBuddy exposes a GUI-only deployment workflow,
+use the available local automation/integration method if possible.
+
+If a manual user action is genuinely unavoidable,
+stop only at that exact point and tell the user precisely what needs to be clicked.
+
+==================================================
+STEP 3 — DETERMINE DEPLOYMENT TOPOLOGY
+==================================================
+
+Inspect LIFE HUD's current Ship-based architecture.
+
+Identify what must run online:
+
+- web
+- API
+- PostgreSQL
+- required Redis/cache if still used
+- object/file storage
+- scheduler
+- any required mail/auth support
+
+Determine how WorkBuddy can host or connect each component.
+
+Do not assume that deploying only the frontend is sufficient.
+
+A successful deployment must preserve real persistence.
+
+==================================================
+HARD RULE
+==================================================
+
+DO NOT fake deployment by pointing an online frontend at:
+
+127.0.0.1
+localhost
+the user's home computer
+
+The iPhone must be able to use LIFE HUD when it is on a different network.
+
+The online application must depend only on resources reachable from the deployed environment.
+
+==================================================
+STEP 4 — SECRETS / ENVIRONMENT
+==================================================
+
+Audit environment configuration.
+
+Never commit:
+
+- .env
+- passwords
+- session secrets
+- database credentials
+- AI provider keys
+- storage credentials
+- private tokens
+
+Use WorkBuddy's secret/environment-variable mechanism.
+
+Review git history/current tracked files for accidental secrets before publishing.
+
+If a real secret has already been committed:
+
+do not merely delete the file;
+report it and rotate/revoke the credential where possible.
+
+==================================================
+STEP 5 — AUTH HARDENING
+==================================================
+
+This deployment is currently intended primarily for the owner.
+
+Preserve real Better Auth authentication.
+
+Review:
+
+- production/public base URL
+- trusted origin
+- session cookie settings
+- secure cookie behavior
+- HTTPS behavior
+- CSRF/origin handling
+- password reset URL if enabled
+
+Do NOT weaken authentication just to make deployment easier.
+
+Do NOT expose user data before login.
+
+==================================================
+REGISTRATION
+==================================================
+
+For the current Daily Driver:
+
+avoid leaving unrestricted public registration unless there is a deliberate reason.
+
+Prefer one of:
+
+- owner-only existing account
+- invite/restricted registration
+- registration temporarily disabled after owner setup
+
+Use the simplest clean mechanism compatible with current architecture.
+
+Do not build a complex invitation system.
+
+==================================================
+STEP 6 — DATABASE
+==================================================
+
+The online deployment needs persistent PostgreSQL-compatible storage.
+
+Use the persistence option WorkBuddy actually supports.
+
+Run migrations safely.
+
+Do not point production at an ephemeral filesystem database.
+
+Do not expose the database publicly unless the platform strictly requires it.
+
+Preserve owner isolation.
+
+==================================================
+CURRENT LOCAL DATA
+==================================================
+
+Do NOT automatically copy development/test fixtures into the online personal account.
+
+Determine whether the current local DB contains:
+
+- real user data
+- dev seed data
+- synthetic test accounts
+
+If there is valuable real data that should migrate,
+perform a deliberate migration.
+
+Otherwise start the online owner account cleanly.
+
+Do not mix test users with the real Daily Driver account.
+
+==================================================
+STEP 7 — FILE STORAGE
+==================================================
+
+Ensure uploaded files remain persistent online.
+
+Do not depend on a temporary container filesystem.
+
+Use WorkBuddy-supported persistent/object storage if available.
+
+Preserve:
+
+- ownership checks
+- private access
+- signed/authorized retrieval where currently implemented
+
+Do not make user files publicly enumerable.
+
+==================================================
+STEP 8 — SCHEDULER / REMINDERS
+==================================================
+
+Verify the reminder scheduler continues to operate online.
+
+It must:
+
+- run without the user's Windows PC staying on
+- persist ReminderRules
+- recover after restart
+- avoid duplicate NotificationInstances
+- preserve quiet-hours behavior
+
+Do not create multiple scheduler instances that cause duplicate reminders.
+
+If WorkBuddy scales services automatically,
+ensure scheduler execution remains single-authority or safely locked.
+
+==================================================
+STEP 9 — LIM
+==================================================
+
+Deploy the existing Lim architecture unchanged.
+
+Do NOT weaken:
+
+- Context Builder privacy
+- action validation
+- domain authorization
+- Action Registry
+- HIGH_PRIVATE handling
+- NEVER policy
+
+If a real AI runtime provider key is not yet configured:
+
+the site must still deploy.
+
+Lim may show a graceful unavailable state.
+
+Do not block the entire LIFE HUD deployment on AI credentials.
+
+==================================================
+STEP 10 — PUBLIC URL
+==================================================
+
+Use the HTTPS URL WorkBuddy provides.
+
+A custom domain is NOT required now.
+
+Do not spend time purchasing/configuring a domain.
+
+Record the final stable URL clearly.
+
+==================================================
+STEP 11 — MOBILE / IPHONE DAILY DRIVER
+==================================================
+
+After online deployment:
+
+verify the production URL using a mobile-sized browser first.
+
+Then prepare it for real iPhone usage.
+
+Requirements:
+
+- HTTPS
+- responsive layout
+- bottom navigation usable
+- safe-area aware
+- forms usable with mobile keyboard
+- Lim sheet/fullscreen usable
+- no localhost dependencies
+- no desktop-only assumptions
+
+If existing PWA support is simple to enable safely,
+prepare:
+
+- manifest
+- app name: LIFE HUD
+- theme/background
+- suitable icons from existing project assets
+- standalone display
+
+Do not spend a large amount of time on advanced offline caching yet.
+
+==================================================
+STEP 12 — ERROR HANDLING
+==================================================
+
+Online errors must not dump raw:
+
+HTTPError
+JSON stack output
+internal URLs
+database details
+secrets
+
+Normal user UI should receive a LIFE HUD error state.
+
+Keep technical details in server/developer logs.
+
+==================================================
+STEP 13 — LOCAL + ONLINE ENVIRONMENTS
+==================================================
+
+Keep environment separation clear.
+
+LOCAL:
+local database/storage/services
+
+ONLINE:
+WorkBuddy deployment resources
+
+Do not make local development accidentally write to the real online database.
+
+Provide clear environment configuration.
+
+==================================================
+STEP 14 — DEPLOYMENT WORKFLOW
+==================================================
+
+Document the shortest reliable future update flow.
+
+Ideal concept:
+
+develop locally
+→ test
+→ commit
+→ WorkBuddy deploy/update
+
+If WorkBuddy supports git-based or automatic redeployment,
+configure it only if safe and clear.
+
+Do not add unnecessary CI/CD complexity.
+
+==================================================
+ZCODE / QODER POLICY
+==================================================
+
+Continue delegating mechanical work.
+
+Preferred:
+
+1. zcode
+2. Qoder / already-authorized local fallback
+3. Codex for critical decisions
+
+Use local models for:
+
+- configuration boilerplate
+- environment-file templates
+- documentation
+- repetitive deployment checks
+- mobile/PWA boilerplate
+- cleanup
+
+Codex personally owns:
+
+- security
+- secrets
+- auth
+- data persistence
+- topology
+- migration
+- scheduler correctness
+- final deployment verification
+
+==================================================
+REQUIRED ONLINE VERIFICATION
+==================================================
+
+After deployment, test the actual PUBLIC URL.
+
+Do NOT verify only localhost.
+
+At minimum:
+
+1. open public URL logged out
+2. sign in
+3. HOME loads
+4. create Task
+5. reload
+6. Task persists
+7. QUEST works
+8. STUDY works
+9. STATUS quick capture works
+10. GROWTH works
+11. Lim opens
+12. Reminder can be created
+13. Archive/Captain's Log works
+14. upload/download a private test file
+15. logout
+16. verify protected data is inaccessible
+17. login again
+18. verify data persists
+
+==================================================
+IPHONE-RELEVANT VERIFICATION
+==================================================
+
+At mobile width verify:
+
+- HOME
+- QUEST
+- STUDY
+- STATUS
+- GROWTH
+- LIM
+- MORE
+
+No horizontal overflow.
+
+Bottom navigation remains usable.
+
+Do not claim real-iPhone verification unless an actual iPhone was used.
+
+Clearly distinguish:
+
+mobile browser emulation
+vs
+real iPhone testing.
+
+==================================================
+NO NEW PRODUCT FEATURES
+==================================================
+
+Do NOT implement Reading yet.
+
+Do NOT implement Mind Map yet.
+
+Do NOT implement:
+
+Memory consolidation
+Bridge
+Night Voyage
+SOCIAL
+WALLET
+
+This phase is deployment only.
+
+==================================================
+ACCEPTANCE
+==================================================
+
+PHASE 9A passes only if:
+
+1. WorkBuddy is actually used for deployment.
+
+2. LIFE HUD has a reachable HTTPS URL.
+
+3. Windows and iPhone can access the same online system from different networks.
+
+4. auth works online.
+
+5. PostgreSQL data persists.
+
+6. files persist.
+
+7. scheduler/reminders work without the Windows PC remaining on.
+
+8. owner isolation remains valid.
+
+9. secrets are not committed.
+
+10. local and online environments are separated.
+
+11. existing business tests remain green.
+
+12. public URL smoke test passes.
+
+13. mobile-width UI works.
+
+14. local development still works.
+
+==================================================
+FINAL REPORT
+==================================================
+
+Report concisely:
+
+- how WorkBuddy was discovered/invoked
+- exact WorkBuddy deployment architecture used
+- services/resources deployed
+- final HTTPS URL
+- auth status
+- database status
+- storage status
+- scheduler status
+- Lim runtime status
+- mobile verification status
+- whether a real iPhone still needs manual testing
+- local development status
+- secrets/security checks
+- zcode/Qoder delegation
+- unresolved blockers
+
+Commit deployment-related project changes safely.
+
+Then STOP.
+
+Do NOT begin Reading or Mind Map automatically.

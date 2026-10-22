@@ -1,0 +1,1074 @@
+Proceed to PHASE 8 — VISUAL POLISH v1.
+
+PHASE 7 — REMINDER + ARCHIVE FOUNDATION has passed acceptance.
+
+This phase is DESIGN / UX POLISH ONLY.
+
+Do NOT add new business domains.
+
+Do NOT redesign the underlying product architecture.
+
+Do NOT change working domain semantics unless a visual bug reveals a true usability defect.
+
+The goal is:
+
+turn the currently functional LIFE HUD into a coherent, polished, daily-usable personal operating system.
+
+==================================================
+TOKEN / LOCAL MODEL POLICY
+==================================================
+
+Conserve Codex usage.
+
+Preferred delegation:
+
+1. zcode
+2. authorized local fallback such as Qoder
+3. Codex only for design-system decisions, interaction architecture, integration review, and final acceptance
+
+Delegate repetitive work:
+
+- CSS/Tailwind cleanup
+- spacing normalization
+- token replacement
+- repetitive component styling
+- responsive adjustments
+- icon consistency
+- typography cleanup
+- skeleton/loading-state boilerplate
+- card variants
+- visual regression fixes
+- low-risk component refactors
+- screenshot comparison notes
+
+Codex personally owns:
+
+- visual hierarchy
+- information density
+- responsive behavior
+- accessibility
+- Lim presence
+- HOME hierarchy
+- mobile navigation behavior
+- cross-page consistency
+- final visual review
+
+==================================================
+HARD RULE
+==================================================
+
+DO NOT TURN LIFE HUD INTO:
+
+- generic SaaS
+- Notion clone
+- Linear clone
+- neon cyberpunk dashboard
+- RGB gamer UI
+- mobile game
+- excessive sci-fi HUD
+- glassmorphism everywhere
+- overly decorative anime UI
+
+Canonical direction:
+
+80% usable personal operating system
+20% restrained sci-fi / space identity
+
+For ordinary modules:
+
+world-building intensity = 10–20%
+
+HOME:
+
+20–30%
+
+Bridge is NOT implemented in this phase.
+
+==================================================
+PRIMARY VISUAL GOAL
+==================================================
+
+The app should feel:
+
+quiet
+clear
+personal
+futuristic
+slightly cinematic
+restrained
+high-quality
+not busy
+
+The user should be able to glance at a screen and immediately know:
+
+- where am I?
+- what matters now?
+- what can I do next?
+
+==================================================
+DO NOT CHANGE PRODUCT IA
+==================================================
+
+Mobile bottom navigation remains:
+
+HOME
+QUEST
+◉ LIM
+STUDY
+MORE
+
+Do not rename or reorder these.
+
+The center LIM entry remains visually distinct.
+
+Desktop keeps a persistent shell / sidebar approach.
+
+==================================================
+DESIGN SYSTEM AUDIT
+==================================================
+
+First audit the current UI for:
+
+- inconsistent spacing
+- inconsistent radii
+- inconsistent borders
+- inconsistent text sizes
+- duplicate colors
+- excessive card nesting
+- weak hierarchy
+- cramped sections
+- empty-state inconsistency
+- mobile overflow
+- desktop wasted space
+- inconsistent button styles
+- inconsistent icon sizing
+- unclear active navigation
+- poor focus states
+- poor disabled/loading states
+
+Fix those systematically.
+
+Do not patch every page with one-off CSS.
+
+==================================================
+DESIGN TOKENS
+==================================================
+
+Consolidate semantic tokens.
+
+At minimum:
+
+surface
+surfaceElevated
+surfaceGlass
+
+textPrimary
+textSecondary
+textMuted
+
+accent
+accentSoft
+
+success
+warning
+danger
+
+borderSoft
+borderStrong
+
+glowActive
+
+radiusSm
+radiusMd
+radiusLg
+radiusXl
+
+spacing scale
+
+shadow/subtle elevation tokens
+
+Also retain world tokens:
+
+starDensity
+ambientGlow
+voyageTint
+limPresenceIntensity
+hudDepth
+particleIntensity
+
+Do not allow world tokens to hurt readability.
+
+==================================================
+TYPOGRAPHY
+==================================================
+
+Refine type hierarchy.
+
+Suggested conceptual hierarchy:
+
+Display
+Page Title
+Section Title
+Card Title
+Body
+Meta
+Micro Label
+
+Avoid:
+
+- too many all-caps labels
+- overuse of letter spacing
+- tiny unreadable metadata
+- excessive monospace styling
+
+HUD labels may use restrained tracking,
+but body copy should remain comfortable.
+
+Chinese readability is a priority.
+
+==================================================
+COLOR
+==================================================
+
+Preserve dark blue-black foundation.
+
+Use restrained cool blue / ice-blue accents.
+
+Avoid:
+
+- pure black everywhere
+- electric cyan everywhere
+- bright neon borders
+- too many accent colors
+- high-saturation gradients
+
+Accent should guide attention,
+not decorate every element.
+
+==================================================
+BACKGROUND / SPACE ATMOSPHERE
+==================================================
+
+Create/refine a subtle space atmosphere.
+
+Allowed:
+
+- faint starfield
+- extremely slow parallax if already easy
+- sparse particles
+- very subtle orbital lines
+- slight ambient gradients
+
+Do not:
+
+- animate aggressively
+- distract from reading
+- use large bright nebula backgrounds on ordinary screens
+- make text contrast unstable
+
+Atmosphere should almost disappear when the user focuses on content.
+
+==================================================
+CARD SYSTEM
+==================================================
+
+Normalize cards.
+
+Prefer a small number of card variants:
+
+GlassCard
+HUDCard
+FocusCard
+QuietCard
+AlertCard
+
+Do not nest cards inside cards without real hierarchy need.
+
+Cards should have:
+
+- consistent padding
+- consistent border opacity
+- consistent corner radius
+- clear title/body separation
+
+Avoid every block looking equally important.
+
+==================================================
+HOME — HIGHEST PRIORITY
+==================================================
+
+HOME gets the strongest polish.
+
+Canonical principle:
+
+HOME tells you what matters now.
+
+Current screenshot is structurally correct,
+but improve visual hierarchy significantly.
+
+HOME should feel calmer and more intentional.
+
+Mobile priority:
+
+1. greeting / contextual header
+2. CURRENT or NEXT
+3. Today
+4. compact STATUS
+5. Lim brief / presence
+6. subtle Voyage context
+
+Do not make the page long without reason.
+
+==================================================
+HOME FOCUS CARD
+==================================================
+
+NEXT / CURRENT should be the dominant card.
+
+When empty:
+
+do not leave a huge visually heavy empty rectangle.
+
+Current text such as:
+
+“此刻，可以留白。”
+
+is valid.
+
+But visually,
+empty-state card should feel lighter than an urgent action card.
+
+Differentiate:
+
+ACTIVE FOCUS
+vs
+QUIET FOCUS
+
+without breaking layout.
+
+==================================================
+HOME — EMPTY STATE
+==================================================
+
+When nothing matters:
+
+make the UI genuinely calm.
+
+Do not leave:
+
+large dead empty sections
+heavy borders
+fake placeholders
+
+A quiet state may include:
+
+此刻，可以留白。
+
+今天没有必须处理的事。
+
+subtle atmosphere
+
+No call-to-action needed unless useful.
+
+==================================================
+HOME — TODAY
+==================================================
+
+Make Today compact.
+
+Classes/tasks should scan quickly.
+
+Use:
+
+time
+small icon/type marker
+title
+secondary context
+
+Do not make every row a large card.
+
+==================================================
+HOME — STATUS
+==================================================
+
+Status snapshot should remain compact.
+
+Example:
+
+平静
+精力 3/5
+
+Quick capture should be visible but not intrusive.
+
+==================================================
+HOME — LIM PRESENCE
+==================================================
+
+Lim should feel present,
+not like a customer-support widget.
+
+For v1 polish:
+
+use a restrained visual presence.
+
+Do NOT build full dynamic avatar.
+
+Possible implementation:
+
+- small avatar/presence mark
+- subtle light/glow
+- clear “告诉 Lim…” entry
+- quiet response preview / Lim Brief
+
+Do not use:
+chatbot bubble in corner
+support-agent iconography
+
+==================================================
+QUEST
+==================================================
+
+Polish QUEST into a clear execution workspace.
+
+Mobile hierarchy:
+
+NOW
+TODAY
+INBOX
+
+NOW should feel focused.
+
+Avoid showing too many tasks with equal visual weight.
+
+Task cards should clearly communicate:
+
+title
+planned time
+deadline if relevant
+estimate
+status
+
+without visual clutter.
+
+Actions:
+
+开始
+完成
+稍后
+换一个
+
+should be easy to reach,
+but not look like four primary buttons.
+
+==================================================
+QUEST STATUS LANGUAGE
+==================================================
+
+Avoid moralized red failure visuals.
+
+COMPLETED:
+quiet success
+
+DELAYED:
+neutral
+
+DROPPED:
+muted
+
+Hard deadlines:
+clear but not alarmist unless truly urgent.
+
+==================================================
+STUDY
+==================================================
+
+Polish STUDY as a university workspace,
+not a school management admin panel.
+
+Mobile priority:
+
+今日课程
+作业
+课程
+资料
+
+Course cards should not feel like generic database records.
+
+Current / next course should scan immediately.
+
+==================================================
+ASSIGNMENT STATE
+==================================================
+
+Visually preserve:
+
+DONE != SUBMITTED
+
+Example:
+
+已完成
+未提交
+
+should be distinguishable at a glance.
+
+Do not combine into a single checkbox/badge.
+
+Submission status may carry slightly stronger attention
+when work is done but not submitted.
+
+==================================================
+STATUS
+==================================================
+
+STATUS should feel softer and calmer than QUEST.
+
+Avoid overly clinical UI.
+
+Primary:
+
+当前/最近状态
+快速记录
+sleep
+water
+simple trends
+
+Use more whitespace.
+
+Do not over-chart.
+
+==================================================
+STATUS QUICK CAPTURE
+==================================================
+
+The capture UI should feel effortless.
+
+Mood choices:
+
+开心
+平静
+疲惫
+焦虑
+难过
+更多
+
+Keep optional fields secondary.
+
+Do not show every possible metric immediately.
+
+==================================================
+GROWTH
+==================================================
+
+GROWTH should feel reflective,
+not gamified.
+
+Primary:
+
+学习记录
+技能
+项目
+
+Learning Records should feel like a personal knowledge trail.
+
+Skills should show qualitative state.
+
+Do NOT visually imply:
+
+levels
+XP
+progress percentages
+
+==================================================
+SKILL UI
+==================================================
+
+Use text/evidence hierarchy.
+
+Examples:
+
+理解中
+实践中
+迁移中
+已有输出
+
+Show evidence count/source subtly.
+
+Avoid progress bars.
+
+==================================================
+ARCHIVE
+==================================================
+
+ARCHIVE should feel like memory/time,
+not file management.
+
+Primary:
+
+最近
+时间线
+Captain's Log
+重要时刻
+
+Use date rhythm and whitespace.
+
+Captain's Log should have a quieter, slightly more literary presentation.
+
+==================================================
+CAPTAIN'S LOG
+==================================================
+
+Writing surface should feel private and calm.
+
+Avoid:
+
+productivity form
+tag-heavy editor
+metadata overload
+
+Text first.
+
+Maybe subtle:
+
+date
+Voyage context
+
+Everything else secondary.
+
+==================================================
+REMINDERS
+==================================================
+
+Reminder UI should remain compact.
+
+Do not make Reminders a major navigation destination.
+
+Use clean states:
+
+upcoming
+delivered
+read
+dismissed
+
+Avoid alarm-clock visual clutter.
+
+==================================================
+LIM CONVERSATION
+==================================================
+
+Polish Lim heavily.
+
+Lim should NOT look like generic chat software.
+
+Conversation should feel integrated into LIFE HUD.
+
+Keep:
+
+- user messages
+- Lim messages
+- small action receipts
+- Undo when available
+
+Reduce visual noise around bubbles.
+
+Do not show developer metadata.
+
+==================================================
+LIM MESSAGE STYLE
+==================================================
+
+Differentiate:
+
+TALK
+ASSIST
+EXECUTE
+
+mostly through content and subtle presentation,
+not huge colored labels.
+
+Action receipt can be compact:
+
+✅ 已完成
+🕒 已延期
+📝 已更新
+
+==================================================
+LIM OVERLAY
+==================================================
+
+Mobile:
+
+sheet / fullscreen behavior should feel native.
+
+Desktop:
+
+panel/overlay should feel part of command center.
+
+Opening Lim should preserve current page context visually.
+
+Do not obscure the entire app unnecessarily on desktop.
+
+==================================================
+MORE
+==================================================
+
+Polish MORE grouping.
+
+Sections:
+
+LIFE
+STATUS
+WALLET
+SOCIAL
+GROWTH
+
+MEMORY
+ARCHIVE
+VOYAGE
+
+TOOLS
+SEARCH
+FILES
+REMINDERS if useful
+
+SETTINGS
+SETTINGS
+PRIVACY
+
+Use clean group spacing.
+
+Avoid a grid of identical giant cards.
+
+==================================================
+MOBILE NAV
+==================================================
+
+Refine bottom nav.
+
+Requirements:
+
+- clear active state
+- center LIM visually special
+- readable labels
+- safe-area support
+- no oversized glowing center button
+- no badge clutter
+
+Do not change order.
+
+==================================================
+DESKTOP
+==================================================
+
+Desktop should feel like a command workspace,
+not a stretched phone.
+
+Use space intentionally.
+
+Possible structure:
+
+left:
+navigation
+
+center:
+primary workspace
+
+right:
+context / Lim / secondary information
+
+But avoid permanently filling every column.
+
+Allow empty space.
+
+==================================================
+RESPONSIVE
+==================================================
+
+Test at least:
+
+375px
+390px
+430px
+768px
+1024px
+1440px
+
+No horizontal overflow.
+
+No clipped bottom nav.
+
+No unreadable card compression.
+
+No modal/sheet overflow.
+
+==================================================
+ACCESSIBILITY
+==================================================
+
+Preserve / improve:
+
+keyboard navigation
+focus-visible
+contrast
+button semantics
+form labels
+dialog/sheet focus
+reduced motion support
+
+Do not sacrifice usability for atmosphere.
+
+==================================================
+LOADING STATES
+==================================================
+
+Add consistent loading/skeleton behavior.
+
+Avoid:
+
+layout jumps
+blank white/black flashes
+giant generic spinners
+
+Use restrained skeletons matching actual content layout.
+
+==================================================
+ERROR STATES
+==================================================
+
+Normalize:
+
+network error
+AI unavailable
+empty state
+validation error
+authorization/not found
+
+Keep language concise and human.
+
+Do not expose raw backend errors.
+
+==================================================
+MICROINTERACTIONS
+==================================================
+
+Add only restrained microinteraction.
+
+Allowed:
+
+150–250ms transitions
+slight card elevation
+soft active glow
+sheet transitions
+small state-change animation
+
+Avoid:
+
+bouncy UI
+excess spring effects
+large scale transforms
+continuous flashy animations
+
+==================================================
+MOTION / REDUCED MOTION
+==================================================
+
+Respect prefers-reduced-motion.
+
+Atmospheric animation should disable/reduce cleanly.
+
+==================================================
+ICONS
+==================================================
+
+Normalize icon library and sizing.
+
+Do not mix inconsistent icon families unless unavoidable.
+
+Avoid decorative icons with no meaning.
+
+==================================================
+COPY AUDIT
+==================================================
+
+Audit visible placeholder/dev copy.
+
+Remove:
+
+SHELL 01
+developer labels
+fixture wording
+temporary technical messages
+raw enum labels
+English-only internal terms
+
+User-facing Chinese should be natural.
+
+Do not expose:
+
+NOT_SUBMITTED
+PLANNED
+HIGH_PRIVATE
+etc.
+
+Translate to human UI language.
+
+==================================================
+DEV / DEBUG
+==================================================
+
+Keep dev trace/debug systems.
+
+But ensure they are hidden from normal user mode.
+
+Do not delete valuable developer diagnostics.
+
+==================================================
+NO BUSINESS EXPANSION
+==================================================
+
+Do NOT add:
+
+SOCIAL full implementation
+WALLET full implementation
+Memory consolidation
+Night Voyage
+Bridge
+voice
+dynamic avatar
+semantic search
+advanced reports
+future Packs
+
+This is polish, not scope expansion.
+
+==================================================
+VISUAL REGRESSION
+==================================================
+
+Capture/reference screenshots for at least:
+
+Mobile:
+HOME
+QUEST
+STUDY
+STATUS
+GROWTH
+ARCHIVE
+LIM
+MORE
+
+Desktop:
+HOME
+QUEST
+STUDY
+LIM
+
+Prefer deterministic fixtures / DEV_NOW.
+
+Review for consistency.
+
+==================================================
+SPECIAL HOME TIME STATES
+==================================================
+
+Visually review:
+
+09:10
+upcoming class
+
+14:20
+current class
+
+16:10
+normal task NEXT
+
+20:30
+hard deadline
+
+00:40
+quiet state
+
+These should feel different in emphasis,
+but still belong to one design system.
+
+==================================================
+PHASE 8 ACCEPTANCE
+==================================================
+
+PHASE 8 is complete when:
+
+1. UI no longer looks like a scaffold/demo product.
+
+2. HOME has a clear, calm hierarchy.
+
+3. quiet HOME state feels intentionally quiet.
+
+4. urgent HOME state is visible without looking alarmist.
+
+5. mobile navigation is polished.
+
+6. LIM feels integrated into LIFE HUD.
+
+7. QUEST feels action-oriented but not cluttered.
+
+8. STUDY feels university-native.
+
+9. STATUS feels calm, not clinical.
+
+10. GROWTH is evidence-oriented, not gamified.
+
+11. ARCHIVE feels temporal/personal.
+
+12. Reminder UI is compact.
+
+13. visual tokens are centralized.
+
+14. typography hierarchy is consistent.
+
+15. card system is consistent.
+
+16. icons are consistent.
+
+17. loading/error/empty states are coherent.
+
+18. mobile layouts pass.
+
+19. desktop layouts pass.
+
+20. accessibility basics pass.
+
+21. no major horizontal overflow exists.
+
+22. reduced-motion is supported.
+
+23. dev/debug artifacts are hidden from normal UI.
+
+24. existing business tests remain green.
+
+25. build passes.
+
+26. typecheck passes.
+
+27. visual regression screenshots are reviewed.
+
+==================================================
+FINAL REPORT
+==================================================
+
+At completion report concisely:
+
+- design-system changes
+- HOME changes
+- module-by-module polish
+- Lim polish
+- mobile behavior
+- desktop behavior
+- accessibility
+- screenshot/visual regression results
+- zcode/Qoder delegation
+- unresolved visual issues
+
+Commit safely.
+
+Then STOP.
+
+Do NOT begin new features automatically.

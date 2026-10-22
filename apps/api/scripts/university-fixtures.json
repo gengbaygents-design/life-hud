@@ -1,0 +1,54 @@
+{
+  "courses": [
+    {
+      "key": "math",
+      "name": "高等数学",
+      "code": null,
+      "teacher": null
+    },
+    {
+      "key": "ai",
+      "name": "计算机思维与人工智能基础",
+      "code": null,
+      "teacher": null
+    },
+    {
+      "key": "english",
+      "name": "大学英语",
+      "code": null,
+      "teacher": null
+    },
+    {
+      "key": "sport",
+      "name": "体育",
+      "code": null,
+      "teacher": null
+    }
+  ],
+  "sessions": [
+    {
+      "key": "math-today",
+      "courseKey": "math",
+      "dayOffset": 0,
+      "startTime": "09:50",
+      "endTime": "11:25",
+      "placeName": "教学楼A-101"
+    },
+    {
+      "key": "ai-today",
+      "courseKey": "ai",
+      "dayOffset": 0,
+      "startTime": "14:00",
+      "endTime": "15:35",
+      "placeName": "教学楼B-202"
+    },
+    {
+      "key": "english-tomorrow",
+      "courseKey": "english",
+      "dayOffset": 1,
+      "startTime": "09:50",
+      "endTime": "11:25",
+      "placeName": "教学楼A-102"
+    }
+  ]
+}

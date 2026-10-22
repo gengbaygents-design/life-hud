@@ -1,0 +1,5 @@
+* text=auto eol=lf
+# Preserve the supplied UTF-16LE specification byte for byte.
+docs/source/epic0.txt -text
+# Preserve the supplied Phase 9A request byte for byte.
+docs/source/phase9a-public-daily-driver.txt -text whitespace=cr-at-eol

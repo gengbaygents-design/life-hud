@@ -1,0 +1,1187 @@
+Proceed to PHASE 4 — STATUS + GROWTH.
+
+PHASE 3 — University Pack + STUDY has passed acceptance.
+
+Preserve the existing:
+- Core
+- QUEST
+- University Pack
+- STUDY
+- HOME shell
+- visual system
+
+Do NOT redesign working domains.
+
+Work quickly and conserve Codex usage.
+
+Use zcode aggressively for:
+- repetitive resource scaffolding
+- schemas after semantics are fixed
+- endpoint boilerplate
+- test expansion
+- fixtures
+- UI forms/cards
+- trend rendering boilerplate
+- lint/type cleanup
+
+Codex personally owns:
+- STATUS semantics
+- privacy boundaries
+- LearningRecord semantics
+- skill-evidence semantics
+- anti-fake-mastery rules
+- cross-domain links
+- authorization
+- final review
+
+==================================================
+PHASE GOAL
+==================================================
+
+Implement two real LIFE HUD domains:
+
+1. STATUS
+2. GROWTH
+
+STATUS answers:
+
+“What state am I in?”
+
+GROWTH answers:
+
+“What am I actually learning / building / becoming capable of?”
+
+By the end of this phase:
+
+- STATUS must persist real state moments
+- HOME must show a real current/recent status snapshot
+- Learning Records must be real persisted data
+- Skills must use evidence, not fake percentages
+- LIFE HUD Project #001 must appear in GROWTH
+- user-authored reflections must remain authoritative
+
+==================================================
+PART A — STATUS
+==================================================
+
+STATUS is personal-state sensing.
+
+It is NOT a medical diagnostic system.
+
+Do not build health diagnosis.
+Do not infer medical conditions.
+Do not use LLMs for deterministic body/cycle calculations.
+
+==================================================
+STATUS MOMENT
+==================================================
+
+Create a Core resource:
+
+status-moments/
+
+Conceptual fields:
+
+id
+ownerId
+
+recordedAt
+
+mood nullable
+energy nullable
+stress nullable
+focus nullable
+
+bodyStateJson nullable
+
+note nullable
+
+sourceType nullable
+sourceId nullable
+
+privacyLevel
+
+version
+
+createdAt
+updatedAt
+deletedAt nullable
+
+==================================================
+CRITICAL STATUS RULE
+==================================================
+
+PARTIAL CAPTURE IS VALID.
+
+Valid examples:
+
+mood = CALM
+
+OR:
+
+energy = 2
+
+OR:
+
+mood = TIRED
+note = "午饭后有点困"
+
+Do NOT require every field.
+
+Do NOT force the user to fill a complete wellness survey.
+
+==================================================
+MULTIPLE MOMENTS PER DAY
+==================================================
+
+Multiple StatusMoments in the same day are valid.
+
+Example:
+
+09:05
+CALM
+energy 3
+
+13:10
+TIRED
+energy 2
+
+21:30
+CALM
+energy 3
+
+Later records must NOT overwrite earlier ones.
+
+STATUS is a timeline of state,
+not one row per day.
+
+==================================================
+MOOD MODEL
+==================================================
+
+Support a small practical set.
+
+At minimum equivalent to:
+
+HAPPY
+CALM
+TIRED
+ANXIOUS
+SAD
+
+Support MORE / custom expansion if architecture already allows it,
+but do not create a giant emotion ontology.
+
+UI primary options:
+
+开心
+平静
+疲惫
+焦虑
+难过
+更多
+
+==================================================
+ENERGY / STRESS / FOCUS
+==================================================
+
+Keep these simple.
+
+A small ordinal scale is acceptable.
+
+Example:
+1–5
+
+Do not pretend this is clinical measurement.
+
+UI should remain lightweight.
+
+==================================================
+QUICK CAPTURE
+==================================================
+
+HOME must support:
+
+记录状态
+
+Interaction:
+
+tap
+→ attached popover / small sheet
+→ choose mood
+→ optional details
+→ save
+→ close
+
+Do NOT navigate the user through a long form.
+
+After save:
+
+HOME should reflect the latest relevant StatusMoment.
+
+==================================================
+STATUS PAGE
+==================================================
+
+Turn the STATUS placeholder into a real page.
+
+Priority:
+
+今日状态
+最近状态瞬间
+sleep
+water
+basic trends
+
+Do not build giant analytics dashboards.
+
+A day/week/month selector may exist if lightweight.
+
+==================================================
+SLEEP
+==================================================
+
+Create:
+
+sleep-records/
+
+Conceptual fields:
+
+id
+ownerId
+
+sleepStart
+wakeAt
+
+quality nullable
+note nullable
+
+sourceType nullable
+sourceId nullable
+
+privacyLevel
+
+timestamps
+
+Duration may be derived.
+
+Do not let AI invent sleep interpretation.
+
+The system may report facts such as:
+
+“昨晚记录约 6小时55分。”
+
+Do not automatically diagnose:
+
+“睡眠不足”
+unless deterministic product rules explicitly define that later.
+
+==================================================
+WATER
+==================================================
+
+Create:
+
+water-records/
+
+Minimal:
+
+id
+ownerId
+recordedAt
+amountMl
+timestamps
+
+Keep UI very lightweight.
+
+No shame-based hydration messaging.
+
+==================================================
+EXERCISE
+==================================================
+
+Create a minimal:
+
+exercise-records/
+
+Conceptually:
+
+id
+ownerId
+
+startedAt
+endedAt nullable
+
+activityType
+durationMinutes nullable
+note nullable
+
+sourceType nullable
+
+timestamps
+
+No fake exercise data.
+
+Only real records.
+
+==================================================
+CYCLE
+==================================================
+
+Create a minimal:
+
+cycle-records/
+
+Cycle data is HIGH_PRIVATE by default.
+
+Conceptual fields:
+
+id
+ownerId
+
+startDate
+endDate nullable
+
+symptomsJson nullable
+note nullable
+
+privacyLevel = HIGH_PRIVATE
+
+timestamps
+
+If prediction is implemented:
+
+use deterministic history-based calculation.
+
+Do NOT use LLM guessing.
+
+Support an estimated range rather than pretending exact certainty.
+
+Do not surface cycle information on HOME by default.
+
+==================================================
+STATUS PRIVACY
+==================================================
+
+STATUS records should support privacy levels.
+
+At minimum:
+
+NORMAL
+PRIVATE
+HIGH_PRIVATE
+
+Keep future VAULT compatibility.
+
+Cycle:
+HIGH_PRIVATE by default.
+
+Do not fully implement the entire future privacy engine,
+but respect existing owner isolation.
+
+==================================================
+STATUS DOMAIN EVENTS
+==================================================
+
+Add only useful events:
+
+StatusMomentRecorded
+
+SleepRecorded if useful
+
+Do not create event spam.
+
+==================================================
+PART B — GROWTH
+==================================================
+
+Implement real:
+
+- LearningRecord
+- LearningMistake
+- Skill
+- SkillEvidence
+
+Reuse existing Core:
+
+- Project
+- Goal
+
+Do NOT create a second Project or Goal system.
+
+==================================================
+LEARNING RECORD
+==================================================
+
+Create:
+
+learning-records/
+
+Conceptual fields:
+
+id
+ownerId
+
+title
+
+sourceKind nullable
+sourceRef nullable
+
+reflection nullable
+
+questions nullable
+applications nullable
+projectIdeas nullable
+
+createdBy
+
+privacyLevel
+
+version
+
+createdAt
+updatedAt
+deletedAt nullable
+
+==================================================
+CORE LEARNING PRINCIPLE
+==================================================
+
+SOURCE != REFLECTION
+
+A saved source may exist without user reflection.
+
+Example:
+
+title:
+Agent Memory 架构文章
+
+sourceKind:
+URL
+
+reflection:
+null
+
+This is valid.
+
+Do NOT force the user to “write what you learned”.
+
+==================================================
+CRITICAL RULE
+==================================================
+
+AI MUST NEVER FABRICATE USER REFLECTION.
+
+If the user saved only a screenshot/link:
+
+reflection remains null.
+
+AI may later create separate:
+
+summary
+candidate notes
+questions
+
+but must not write generated prose into the user's reflection field.
+
+User-authored content is authoritative.
+
+==================================================
+LEARNING RECORD INPUT
+==================================================
+
+Support flexible sources conceptually:
+
+TEXT
+URL
+IMAGE
+FILE
+COURSE
+OTHER
+
+Do not overbuild media processing yet.
+
+Reuse existing File/storage foundation where suitable.
+
+A LearningRecord can reference:
+- URL
+- existing File
+- Course
+- Assignment
+- manual text
+
+Do not duplicate source data unnecessarily.
+
+==================================================
+LEARNING MISTAKE
+==================================================
+
+Create:
+
+learning-mistakes/
+
+Conceptual fields:
+
+id
+ownerId
+
+title
+
+sourceType nullable
+sourceId nullable
+
+mistakeDescription
+
+correctUnderstanding nullable
+
+status
+
+reviewedAt nullable
+
+timestamps
+
+Example:
+
+洛必达法则使用条件混淆
+
+source:
+高数第三章作业
+
+Do not build advanced spaced repetition yet.
+
+==================================================
+SKILL
+==================================================
+
+Create:
+
+skills/
+
+Conceptual fields:
+
+id
+ownerId
+
+name
+state
+
+description nullable
+
+version
+timestamps
+
+==================================================
+SKILL STATE
+==================================================
+
+Use evidence-based qualitative states.
+
+Equivalent to:
+
+EXPOSED
+UNDERSTANDING
+PRACTICING
+INDEPENDENT
+TRANSFER
+PROVEN
+
+Do NOT use:
+
+67%
+82%
+Level 14
+XP
+
+No fake precision.
+
+==================================================
+SKILL EVIDENCE
+==================================================
+
+Create:
+
+skill-evidence/
+
+Conceptual fields:
+
+id
+ownerId
+skillId
+
+evidenceType
+
+sourceType
+sourceId
+
+note nullable
+
+observedAt
+
+timestamps
+
+Evidence types equivalent to:
+
+CONTACT
+UNDERSTANDING
+PRACTICE
+INDEPENDENT
+TRANSFER
+OUTPUT
+
+==================================================
+CRITICAL GROWTH RULE
+==================================================
+
+INPUT != MASTERY
+
+Examples:
+
+Saving an article:
+may support CONTACT.
+
+Watching a video:
+may support CONTACT.
+
+Writing own explanation:
+may support UNDERSTANDING.
+
+Doing exercises:
+may support PRACTICE.
+
+Doing independently:
+may support INDEPENDENT.
+
+Applying concept in LIFE HUD:
+may support TRANSFER.
+
+Producing a real output:
+may support OUTPUT / PROVEN.
+
+Do NOT automatically upgrade skill state merely because one record exists.
+
+==================================================
+LEARNING RECORD → SKILL EVIDENCE
+==================================================
+
+Do not automatically generate high-level evidence.
+
+Example:
+
+Source-only LearningRecord:
+→ CONTACT is allowed.
+
+Reflection containing own explanation:
+→ may allow UNDERSTANDING evidence,
+but only through explicit deterministic/user-confirmed logic.
+
+Application to LIFE HUD:
+→ may support TRANSFER evidence.
+
+Keep the relation explicit.
+
+==================================================
+PROJECT INTEGRATION
+==================================================
+
+Reuse existing:
+
+LIFE HUD · Project #001
+
+GROWTH should show real Project data.
+
+LearningRecord can connect to Project using existing EntityLink.
+
+Example:
+
+LearningRecord:
+过拟合与 LIFE HUD 推荐系统
+
+LINK:
+APPLIED_TO
+
+Project:
+LIFE HUD · Project #001
+
+Do not create GrowthProject table.
+
+==================================================
+COURSE / STUDY INTEGRATION
+==================================================
+
+LearningRecord may reference:
+
+Course
+Assignment
+File
+
+Example:
+
+高数错误理解
+→ source = Assignment
+
+But STUDY completion must NOT automatically generate fake reflections.
+
+Completing homework may produce factual activity/evidence.
+
+It must not generate:
+
+“今天我深刻理解了……”
+
+unless the user actually wrote that.
+
+==================================================
+STUDY → LEARNING RECORD PROMPT
+==================================================
+
+Do NOT implement Lim intelligence yet.
+
+However prepare the architecture so that later Lim can say:
+
+“这个点值得留成学习记录，要记下来吗？”
+
+No auto-creation of reflective LearningRecords
+for every completed Assignment.
+
+==================================================
+GROWTH UI
+==================================================
+
+Turn GROWTH placeholder into a real page.
+
+Mobile hierarchy:
+
+1. 学习记录
+2. 技能
+3. 项目
+
+Small secondary area for:
+- goals
+
+Do not overload first screen with:
+competitions
+certificates
+career planning
+portfolio analytics
+
+Those remain future scope.
+
+==================================================
+LEARNING RECORD UI
+==================================================
+
+Primary:
+
+recent Learning Records
+
+＋记录
+
+Creation should support:
+
+title
+source
+optional reflection
+optional application
+
+Do not force every field.
+
+==================================================
+SKILL UI
+==================================================
+
+Show qualitative state:
+
+接触中
+理解中
+实践中
+独立使用
+迁移中
+已有证明
+
+or equivalent concise Chinese labels.
+
+Do not show percentages.
+
+Show evidence when user opens the Skill.
+
+==================================================
+PROJECT UI
+==================================================
+
+Show real existing projects.
+
+At minimum:
+
+LIFE HUD · Project #001
+
+Do not build complex project management here.
+QUEST already owns task execution.
+
+==================================================
+HOME INTEGRATION
+==================================================
+
+HOME may now consume:
+
+latest StatusMoment
+
+Do NOT implement full energy-aware Attention Engine yet.
+
+Simply show a compact real status snapshot.
+
+Example:
+
+平静 · 精力 3/5
+
+If there is no record:
+
+allow a quiet empty state.
+
+Do not nag the user to record mood.
+
+==================================================
+REALISTIC DEV SEED
+==================================================
+
+Add deterministic development data.
+
+Status:
+
+09:05
+mood = CALM
+energy = 3
+stress = 2
+
+13:10
+mood = TIRED
+energy = 2
+note = 午饭后有点困
+
+Sleep:
+
+01:10 → 08:05
+
+Water:
+
+10:30 300ml
+13:40 250ml
+
+Cycle:
+include only in privacy-focused fixture if possible
+
+Learning Record 1:
+
+title:
+过拟合与 LIFE HUD 推荐系统
+
+source:
+计算机思维与人工智能基础
+
+reflection:
+“如果系统太依赖我过去的行为，
+会不会反过来把我固定成某种人？”
+
+link to:
+LIFE HUD · Project #001
+
+Learning Record 2:
+
+title:
+Agent Memory 架构文章
+
+source:
+URL
+
+reflection:
+null
+
+Learning Mistake:
+
+洛必达法则使用条件混淆
+
+source:
+高数第三章作业
+
+Skills:
+
+AI / Agent Systems
+state = UNDERSTANDING
+
+Product Design
+state = PRACTICING
+
+Web Development
+state = EXPOSED
+
+Do NOT seed PROVEN mastery without real evidence.
+
+==================================================
+REQUIRED TESTS — STATUS
+==================================================
+
+STATUS-001
+mood-only StatusMoment is valid.
+
+STATUS-002
+energy-only StatusMoment is valid.
+
+STATUS-003
+multiple StatusMoments in one day coexist.
+
+STATUS-004
+later StatusMoment does not overwrite earlier one.
+
+STATUS-005
+HOME quick capture persists real data.
+
+STATUS-006
+HOME reads latest relevant real StatusMoment.
+
+STATUS-007
+User A cannot access User B StatusMoment.
+
+STATUS-008
+Cycle defaults to HIGH_PRIVATE.
+
+STATUS-009
+Cycle prediction, if present, does not invoke LLM.
+
+STATUS-010
+reload preserves status records.
+
+==================================================
+REQUIRED TESTS — GROWTH
+==================================================
+
+GROWTH-001
+create source-only LearningRecord.
+
+Expected:
+reflection = null
+
+GROWTH-002
+source-only record does NOT automatically imply UNDERSTANDING.
+
+GROWTH-003
+CONTACT evidence can reference source-only record.
+
+GROWTH-004
+user-authored reflection persists exactly.
+
+GROWTH-005
+AI/generated summary cannot overwrite reflection.
+
+GROWTH-006
+LearningRecord can link to LIFE HUD Project #001.
+
+GROWTH-007
+LearningMistake can reference Assignment.
+
+GROWTH-008
+Skill qualitative state persists.
+
+GROWTH-009
+SkillEvidence references real source.
+
+GROWTH-010
+no percentage mastery is generated.
+
+GROWTH-011
+User A cannot access User B Growth records.
+
+==================================================
+MANUAL GOLDEN JOURNEY
+==================================================
+
+1. Login.
+
+2. HOME:
+tap 记录状态.
+
+3. Record:
+平静
+energy 3
+
+4. Save.
+
+5. Verify HOME shows real status.
+
+6. Open STATUS.
+
+7. Verify record exists.
+
+8. Add another moment:
+疲惫
+energy 2
+
+9. Verify both moments exist.
+
+10. Open GROWTH.
+
+11. Create LearningRecord:
+
+title:
+过拟合与 LIFE HUD 推荐系统
+
+source:
+计算机思维与人工智能基础
+
+reflection:
+“如果系统太依赖我过去的行为，
+会不会反过来把我固定成某种人？”
+
+12. Link it to:
+LIFE HUD · Project #001
+
+13. Verify reflection remains exact user text.
+
+14. Create:
+
+Agent Memory 架构文章
+
+source URL only.
+
+15. Verify:
+reflection = null
+
+16. Verify it does NOT create fake understanding/mastery.
+
+17. Open Skill:
+AI / Agent Systems
+
+18. Verify evidence is visible and qualitative.
+
+19. Reload.
+
+20. Verify all state persists.
+
+21. Second user cannot access records.
+
+==================================================
+DO NOT IMPLEMENT YET
+==================================================
+
+Do NOT implement:
+
+full Lim Action system
+Memory consolidation
+Archive intelligence
+full Attention Engine
+semantic search
+advanced file parsing
+medical diagnosis
+Apple Health
+automatic mood inference
+fake personality analytics
+advanced career module
+SOCIAL
+WALLET
+Bridge
+Night Voyage
+
+==================================================
+VISUAL REQUIREMENT
+==================================================
+
+Preserve accepted LIFE HUD visual language.
+
+STATUS must feel calm and lightweight.
+
+GROWTH must feel like evidence of learning,
+not a gamified skill tree.
+
+Do not turn either page into generic admin tables.
+
+Use existing:
+AppShell
+GlassCard
+HUDCard
+SectionHeader
+StatusChip
+ActionButton
+EmptyState
+Sheet
+Popover
+
+==================================================
+LOCAL ONLY
+==================================================
+
+Public deployment remains out of scope.
+
+Do not modify deployment infrastructure unless local functionality requires it.
+
+==================================================
+ACCEPTANCE
+==================================================
+
+PHASE 4 is complete when:
+
+1. STATUS uses real persisted data.
+
+2. multiple moments/day work.
+
+3. HOME status snapshot is real.
+
+4. STATUS quick capture works.
+
+5. sleep/water basics work.
+
+6. cycle data has high privacy.
+
+7. LearningRecord is persisted.
+
+8. source-only LearningRecord is legal.
+
+9. user reflection remains authoritative.
+
+10. Skills are evidence-based.
+
+11. no fake percentages exist.
+
+12. SkillEvidence works.
+
+13. LearningMistake exists.
+
+14. LIFE HUD Project #001 appears in GROWTH.
+
+15. LearningRecord can link to Project.
+
+16. Study/Growth boundary remains correct.
+
+17. owner isolation passes.
+
+18. reload persists.
+
+19. existing visual quality remains intact.
+
+20. build passes.
+
+21. typecheck passes.
+
+22. automated tests pass.
+
+23. browser/E2E journey passes.
+
+==================================================
+FINAL REPORT
+==================================================
+
+At completion report concisely:
+
+- STATUS resources created
+- STATUS quick capture behavior
+- privacy behavior
+- LearningRecord behavior
+- Skill/Evidence behavior
+- Study/Growth integration
+- HOME status integration
+- authorization results
+- tests/E2E
+- what zcode handled
+- unresolved issues
+
+Commit the phase safely.
+
+Then STOP.
+
+Do NOT begin Lim automatically.

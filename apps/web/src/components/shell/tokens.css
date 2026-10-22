@@ -1,0 +1,87 @@
+/* tokens.css — quiet dark Chinese personal OS */
+:root {
+  /* Surfaces */
+  --hud-surface: #090f19;
+  --hud-surface-elevated: #111c2b;
+  --hud-surface-glass: rgb(17 28 43 / 70%);
+
+  /* Text */
+  --hud-text-primary: #e8eef6;
+  --hud-text-secondary: #afbed0;
+  --hud-text-muted: #8d9fb5;
+
+  /* Accent & status */
+  --hud-accent: #a2ccee;
+  --hud-accent-soft: rgb(162 204 238 / 9%);
+  --hud-success: #a5cdbb;
+  --hud-warning: #dfc69e;
+  --hud-danger: #e8abb4;
+
+  /* Borders & glow */
+  --hud-border-soft: rgb(174 197 224 / 13%);
+  --hud-border-strong: rgb(174 197 224 / 28%);
+  --hud-glow-active: rgb(130 184 226 / 12%);
+
+  /* Radii */
+  --hud-radius-sm: 8px;
+  --hud-radius-md: 12px;
+  --hud-radius-lg: 18px;
+  --hud-radius-xl: 24px;
+
+  /* Spacing */
+  --hud-space-1: 4px;
+  --hud-space-2: 8px;
+  --hud-space-3: 12px;
+  --hud-space-4: 16px;
+  --hud-space-5: 20px;
+  --hud-space-6: 24px;
+  --hud-space-7: 32px;
+  --hud-space-8: 40px;
+
+  /* Elevation */
+  --hud-shadow-soft: 0 2px 8px rgb(3 8 15 / 34%);
+  --hud-shadow-elevated:
+    0 2px 6px rgb(3 8 15 / 28%), 0 16px 40px rgb(3 8 15 / 44%);
+
+  /* Type scale */
+  --hud-type-display: 28px;
+  --hud-type-page: 24px;
+  --hud-type-section: 18px;
+  --hud-type-card: 16px;
+  --hud-type-body: 15px;
+  --hud-type-meta: 13px;
+  --hud-type-micro: 12px;
+
+  /* Motion */
+  --hud-motion-fast: 180ms;
+
+  /* World */
+  --hud-star-density: 0.22;
+  --hud-ambient-glow: rgb(55 90 130 / 8%);
+  --hud-voyage-tint: #9fb6cd;
+  --hud-lim-presence-intensity: 0.35;
+  --hud-hud-depth: 20px;
+  --hud-particle-intensity: 0.16;
+}
+
+.dark {
+  --color-background: var(--hud-surface);
+  --color-foreground: var(--hud-text-primary);
+  --color-card: var(--hud-surface-elevated);
+  --color-card-foreground: var(--hud-text-primary);
+  --color-popover: var(--hud-surface-elevated);
+  --color-popover-foreground: var(--hud-text-primary);
+  --color-primary: var(--hud-accent);
+  --color-primary-foreground: var(--hud-surface);
+  --color-secondary: var(--hud-surface-elevated);
+  --color-secondary-foreground: var(--hud-text-primary);
+  --color-muted: var(--hud-accent-soft);
+  --color-muted-foreground: var(--hud-text-muted);
+  --color-accent: var(--hud-accent-soft);
+  --color-accent-foreground: var(--hud-text-primary);
+  --color-destructive: var(--hud-danger);
+  --color-destructive-foreground: var(--hud-surface);
+  --color-border: var(--hud-border-soft);
+  --color-input: var(--hud-border-strong);
+  --color-ring: var(--hud-accent);
+}

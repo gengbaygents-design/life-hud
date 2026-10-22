@@ -1,0 +1,24 @@
+{
+  "services": {
+    "postgres": {
+      "image": "postgres:17.11", "ports": ["127.0.0.1:5433:5432"],
+      "environment": {"POSTGRES_USER":"${POSTGRES_USER:?required}","POSTGRES_PASSWORD":"${POSTGRES_PASSWORD:?required}","POSTGRES_DB":"${POSTGRES_DB:?required}"},
+      "volumes": ["./.local/infra/postgres:/var/lib/postgresql/data"],
+      "healthcheck": {"test":["CMD-SHELL","pg_isready -h 127.0.0.1 -U $$POSTGRES_USER -d $$POSTGRES_DB"],"interval":"3s","timeout":"3s","retries":20},
+      "logging":{"driver":"local","options":{"max-size":"10m","max-file":"3"}}
+    },
+    "garage": {
+      "image": "dxflrs/garage:v2.2.0", "hostname":"garage", "ports":["127.0.0.1:3900:3900","127.0.0.1:3903:3903"],
+      "volumes":["./.local/infra/garage.toml:/etc/garage.toml:ro","./.local/infra/garage/meta:/var/lib/garage/meta","./.local/infra/garage/data:/var/lib/garage/data"],
+      "healthcheck":{"test":["CMD","/garage","status"],"interval":"3s","timeout":"5s","retries":20},
+      "logging":{"driver":"local","options":{"max-size":"10m","max-file":"3"}}
+    },
+    "mailpit": {
+      "image":"axllent/mailpit:v1.31.6","ports":["127.0.0.1:8025:8025"],
+      "environment":{"MP_DATABASE":"/data/mailpit.db","MP_MAX_MESSAGES":"100"},
+      "volumes":["./.local/infra/mailpit:/data"],
+      "healthcheck":{"test":["CMD","/mailpit","readyz"],"interval":"3s","timeout":"3s","retries":20},
+      "logging":{"driver":"local","options":{"max-size":"10m","max-file":"3"}}
+    }
+  }
+}

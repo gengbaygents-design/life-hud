@@ -1,0 +1,1395 @@
+Proceed to PHASE 5 — LIM CORE.
+
+PHASE 4 — STATUS + GROWTH has passed acceptance.
+
+This is a CRITICAL architectural phase.
+
+Preserve all working domains:
+
+- Core
+- QUEST
+- University Pack
+- STUDY
+- STATUS
+- GROWTH
+- HOME shell
+- existing visual system
+
+Do NOT redesign those domains.
+
+The purpose of this phase is to turn the existing Ship AI chat foundation
+into the real LIFE HUD Lim orchestration layer.
+
+==================================================
+TOKEN / LOCAL MODEL POLICY
+==================================================
+
+Conserve Codex usage aggressively.
+
+Preferred delegation order for mechanical work:
+
+1. zcode
+2. if zcode is unavailable / rate-limited, an already-authorized local model such as Qoder
+3. Codex only when the task actually requires lead-engineer reasoning
+
+If zcode returns errors such as the currently observed
+429 / provider 1113:
+
+- report it accurately
+- do not pretend zcode completed the work
+- use the authorized fallback local model for mechanical work
+- do not let Codex silently consume large amounts of effort on repetitive tasks
+
+Delegate repetitive work such as:
+
+- Zod schema boilerplate
+- fixtures
+- repetitive action tests
+- simple endpoint scaffolding
+- presentational chat components
+- mock provider implementations
+- mapping functions
+- lint/type cleanup
+- documentation normalization
+
+Codex MUST personally own:
+
+- Lim architecture
+- action authority boundaries
+- Context Builder
+- privacy and permission gates
+- risk classification
+- action validation
+- domain-service routing
+- undo semantics
+- model contracts
+- final review
+
+==================================================
+PHASE GOAL
+==================================================
+
+Implement the first REAL Lim.
+
+Lim must support three modes:
+
+EXECUTE
+ASSIST
+TALK
+
+Lim is:
+
+- a navigator
+- a context-aware first officer
+- an orchestration layer
+
+Lim is NOT:
+
+- the database
+- source of truth
+- an autonomous pilot
+- a therapist
+- a generic chatbot pasted into LIFE HUD
+
+Canonical principle:
+
+"She is on your side, not in control."
+
+==================================================
+NON-NEGOTIABLE ARCHITECTURE
+==================================================
+
+The LLM NEVER directly mutates the database.
+
+The required execution path is:
+
+User Message
+→ Input Normalization
+→ Mode / Intent Detection
+→ Relevant Domain Selection
+→ Permission Gate
+→ Context Builder
+→ Model
+→ Structured Action Proposal
+→ Schema Validation
+→ Authorization
+→ Risk Check
+→ Domain Method
+→ Database Transaction
+→ Audit / Outbox
+→ Action Result
+→ Lim Response
+
+The model must NEVER receive:
+
+- arbitrary SQL
+- arbitrary DB update APIs
+- unrestricted generic write tools
+
+Every write must map to an explicitly registered LIFE HUD action.
+
+==================================================
+SHIP AI CHAT FOUNDATION
+==================================================
+
+Reuse suitable existing Ship AI Chat infrastructure:
+
+- conversations
+- messages
+- user ownership
+- persistence
+- AI provider abstraction
+- chat UI
+- streaming where useful
+
+Do NOT simply rename Ship AI Chat to Lim.
+
+Adapt it.
+
+The provider layer must remain replaceable.
+
+Do not tightly couple Lim identity to one model/provider.
+
+Lim != model.
+
+==================================================
+LIM IDENTITY KERNEL
+==================================================
+
+Create a stable Lim system/identity configuration separate from model selection.
+
+Core behavior:
+
+- reliable
+- warm but clear
+- concise
+- quietly intelligent
+- context-aware
+- nonjudgmental
+- restrained
+- not overly enthusiastic
+- capable of dry humor in appropriate contexts
+
+Do NOT implement romance/jealousy/possessiveness.
+
+Do not praise routine actions excessively.
+
+Can execute → say less.
+
+Typical execution receipt should be short.
+
+Examples:
+
+✅ 已记录。
+✅ 已完成。
+🕒 已挪到明天下午。
+📝 截止时间已更新。
+🔗 已关联。
+⚠️ 这个时间我没理解。
+
+==================================================
+LIM MODES
+==================================================
+
+Implement:
+
+EXECUTE
+ASSIST
+TALK
+
+--------------------------------------------------
+EXECUTE
+--------------------------------------------------
+
+The user clearly asks for a system change.
+
+Examples:
+
+“下午四点提醒我拿快递。”
+
+“把高数挪到明天下午。”
+
+“高数作业我做完了。”
+
+“老师说截止改到周一。”
+
+--------------------------------------------------
+ASSIST
+--------------------------------------------------
+
+The user wants help but has not necessarily requested a mutation.
+
+Examples:
+
+“我现在干嘛？”
+
+“今天还有什么要紧的？”
+
+“这门课最近有什么东西没处理？”
+
+--------------------------------------------------
+TALK
+--------------------------------------------------
+
+The user is talking.
+
+Example:
+
+“我真不想写高数了。”
+
+This MUST NOT automatically become:
+
+DROP_TASK
+
+Complaint != action.
+
+Do not turn every statement into structured productivity data.
+
+==================================================
+ACTION GROUP FOUNDATION
+==================================================
+
+If not already present,
+implement:
+
+ActionGroup
+ActionExecution / Action
+
+Conceptually:
+
+ActionGroup:
+- id
+- ownerId
+- sourceConversationId nullable
+- sourceMessageId nullable
+- status
+- riskLevel
+- createdAt
+- completedAt nullable
+
+ActionExecution:
+- id
+- actionGroupId
+- actionType
+- payload
+- status
+- validationResult nullable
+- executionResult nullable
+- reversible
+- beforeState nullable where safe
+- afterState nullable where safe
+- undoToken nullable
+- createdAt
+- completedAt nullable
+
+Do not over-engineer.
+
+The purpose is:
+
+one user message
+→ potentially multiple controlled actions
+
+==================================================
+ACTION RESULT CONTRACT
+==================================================
+
+Use a machine-readable result equivalent to:
+
+{
+  status: "SUCCESS" | "PARTIAL" | "FAILED",
+  createdEntities: [],
+  updatedEntities: [],
+  warnings: [],
+  undoToken: null | string
+}
+
+Lim's natural-language response is generated FROM this result.
+
+The model must not claim success if execution failed.
+
+==================================================
+FIRST ACTION REGISTRY
+==================================================
+
+Implement ONLY this initial registry unless technically necessary:
+
+R0 / READ:
+
+QUERY_CURRENT_CONTEXT
+QUERY_TIMETABLE
+
+R1 / LOW-RISK:
+
+CREATE_TASK
+UPDATE_TASK
+COMPLETE_TASK
+DELAY_TASK
+
+CREATE_ASSIGNMENT
+UPDATE_ASSIGNMENT_DUE_DATE
+MARK_ASSIGNMENT_DONE
+MARK_ASSIGNMENT_SUBMITTED
+
+RECORD_STATUS
+
+CREATE_LEARNING_RECORD
+
+Do not invent dozens of actions.
+
+Do not implement:
+
+payments
+external messaging
+bulk destructive actions
+hard delete
+account export
+social automation
+
+yet.
+
+==================================================
+ACTION SCHEMAS
+==================================================
+
+Every Action type must have a strict Zod schema.
+
+Example concept:
+
+CREATE_TASK:
+
+title
+description?
+plannedStart?
+dueAt?
+estimatedMinutes?
+importance?
+projectId?
+
+DELAY_TASK:
+
+taskId
+newPlannedStart
+expectedVersion?
+
+UPDATE_ASSIGNMENT_DUE_DATE:
+
+assignmentId
+newDueAt
+expectedVersion?
+
+RECORD_STATUS:
+
+mood?
+energy?
+stress?
+focus?
+note?
+
+CREATE_LEARNING_RECORD:
+
+title
+sourceKind?
+sourceRef?
+reflection?
+applications?
+
+Do not allow arbitrary object payloads.
+
+==================================================
+RISK MODEL
+==================================================
+
+Implement:
+
+R0
+read only
+
+R1
+low-risk / reversible personal action
+
+R2
+meaningful destructive/bulk action
+
+R3
+sensitive irreversible/external action
+
+For current Action Registry:
+
+most writes are R1.
+
+High-confidence valid R1:
+may execute without confirmation.
+
+Do NOT ask:
+
+“确定吗？”
+
+for every harmless task creation.
+
+==================================================
+CONFIDENCE BEHAVIOR
+==================================================
+
+Model proposal should include confidence or equivalent.
+
+Behavior:
+
+HIGH confidence
++ R1
++ schema valid
+→ execute
+
+MEDIUM confidence
++ one material ambiguity
+→ ask only the necessary clarification
+
+LOW confidence
+→ concise clarification
+
+Do NOT ask irrelevant questions.
+
+Example:
+
+User:
+“下午四点提醒我拿快递。”
+
+Do not ask:
+
+- 什么快递？
+- 为什么拿？
+- 哪个快递站？
+
+If the only relevant execution detail is clear enough,
+execute what is possible.
+
+==================================================
+VALIDATION MUST OVERRIDE MODEL
+==================================================
+
+Example:
+
+User:
+
+“二十五点提醒我拿快递。”
+
+Model must not silently normalize arbitrary invalid data.
+
+Schema/domain validation fails.
+
+Lim may respond:
+
+“你是指凌晨 1 点吗？”
+
+No database write occurs.
+
+==================================================
+MINIMAL RELEVANT CONTEXT
+==================================================
+
+Implement Context Builder v1.
+
+Hard rule:
+
+DO NOT DUMP THE DATABASE INTO THE MODEL.
+
+Pipeline:
+
+Intent
+→ Domain Selection
+→ Permission Gate
+→ Retrieval
+→ Compression
+→ Context Pack
+
+==================================================
+CONTEXT PROVIDERS
+==================================================
+
+Implement provider-style context retrieval from existing domains.
+
+Initial providers may include:
+
+QUEST
+University/STUDY
+STATUS
+GROWTH
+Current UI Context
+Current Voyage
+
+Each provider returns concise structured candidates,
+not giant database rows.
+
+Possible shape:
+
+{
+  type,
+  title,
+  timing,
+  state,
+  reason,
+  sourceRef
+}
+
+==================================================
+CURRENT UI CONTEXT
+==================================================
+
+The global Lim UI already preserves source route.
+
+Extend this to support useful source entity context.
+
+Examples:
+
+Opened from:
+
+/study/course/:courseId
+
+Context Pack may contain:
+
+currentCourseId
+courseName
+
+Opened from Assignment:
+
+assignmentId
+
+Opened from Task:
+
+taskId
+
+Opened from Growth LearningRecord:
+
+learningRecordId
+
+Do not require the user to repeat information already clearly present in UI context.
+
+==================================================
+EXAMPLE
+==================================================
+
+User is on:
+
+高等数学 Course page
+
+User says:
+
+“这门课最近有什么没处理？”
+
+Do not ask:
+
+“哪门课？”
+
+Use current Course context.
+
+==================================================
+PRIVACY / AI ACCESS GATE
+==================================================
+
+This is mandatory before model invocation.
+
+The Context Builder must respect:
+
+privacy level
+
+and current AI access policy.
+
+Existing HIGH_PRIVATE content must NOT automatically enter model context.
+
+If an existing record has:
+
+aiAccessPolicy = NEVER
+
+it MUST NOT enter Lim context.
+
+Even if:
+
+search matches it
+the model asks for it
+the context provider sees it
+
+NEVER means never.
+
+==================================================
+CYCLE DATA
+==================================================
+
+Current cycle records are HIGH_PRIVATE / restricted.
+
+Ordinary prompts such as:
+
+“我现在干嘛？”
+
+must NOT inject cycle data.
+
+Do not weaken Phase 4 privacy to make Lim easier.
+
+==================================================
+STATUS CONTEXT
+==================================================
+
+For a question such as:
+
+“我现在干嘛？”
+
+Lim may receive only a compact recent status such as:
+
+latest:
+energy 2/5
+mood tired
+
+if privacy rules allow it.
+
+Do NOT send the user's entire state history.
+
+==================================================
+QUEST CONTEXT
+==================================================
+
+For:
+
+“我现在干嘛？”
+
+retrieve:
+
+- current actionable QUEST candidates
+- hard deadlines
+- planned timing
+
+Do not retrieve all historical completed tasks.
+
+==================================================
+UNIVERSITY CONTEXT
+==================================================
+
+Retrieve only what matters:
+
+- current/next class
+- relevant Assignment
+- deadline
+- submission/work state
+
+Do not dump all semesters/courses.
+
+==================================================
+GROWTH CONTEXT
+==================================================
+
+Only include Growth context when relevant.
+
+Example:
+
+“把刚才过拟合的想法记下来。”
+
+May retrieve:
+
+- recent LearningRecord candidate/context
+- current Course
+- current Project where relevant
+
+Do not send the entire skill tree.
+
+==================================================
+FIRST REAL LIM ACTIONS
+==================================================
+
+Support these natural-language scenarios.
+
+--------------------------------------------------
+SCENARIO 1
+--------------------------------------------------
+
+User:
+
+“今晚九点做高数第三章作业。”
+
+If a matching Task is unambiguous:
+
+UPDATE_TASK / DELAY_TASK as appropriate.
+
+Do not create a duplicate task.
+
+--------------------------------------------------
+SCENARIO 2
+--------------------------------------------------
+
+User:
+
+“高数第三章作业我做完了。”
+
+Expected:
+
+COMPLETE_TASK
+
+Then existing domain behavior handles:
+
+TaskCompleted
+→ Assignment workState DONE
+
+submission remains NOT_SUBMITTED.
+
+Lim must NOT say:
+
+“已经提交。”
+
+--------------------------------------------------
+SCENARIO 3
+--------------------------------------------------
+
+User:
+
+“我交了。”
+
+If current context clearly identifies the Assignment:
+
+MARK_ASSIGNMENT_SUBMITTED
+
+If context does not identify which Assignment:
+
+ask one concise clarification.
+
+--------------------------------------------------
+SCENARIO 4
+--------------------------------------------------
+
+User:
+
+“老师说高数第三章改到周一交。”
+
+Expected:
+
+UPDATE_ASSIGNMENT_DUE_DATE
+
+Existing domain logic should then update:
+
+Task dueAt
+
+while preserving:
+
+Task plannedStart
+
+Lim must use existing University domain method.
+
+Do NOT replicate deadline synchronization logic inside Lim.
+
+--------------------------------------------------
+SCENARIO 5
+--------------------------------------------------
+
+User:
+
+“我现在有点累。”
+
+Default:
+
+TALK or ASSIST
+
+Do NOT automatically RECORD_STATUS unless the wording clearly requests recording.
+
+Possible Lim response may acknowledge naturally.
+
+--------------------------------------------------
+SCENARIO 6
+--------------------------------------------------
+
+User:
+
+“记一下，我现在有点累，精力大概 2。”
+
+Expected:
+
+RECORD_STATUS
+
+--------------------------------------------------
+SCENARIO 7
+--------------------------------------------------
+
+User:
+
+“把刚才过拟合那个想法记下来。”
+
+If current/recent context makes the referent clear:
+
+CREATE_LEARNING_RECORD
+
+Never fabricate reflection.
+
+Use actual user wording/context only.
+
+--------------------------------------------------
+SCENARIO 8
+--------------------------------------------------
+
+User:
+
+“我真不想写高数了。”
+
+Do NOT:
+
+DROP_TASK
+
+Mode should generally be TALK / ASSIST.
+
+--------------------------------------------------
+SCENARIO 9
+--------------------------------------------------
+
+User:
+
+“高数今天不做了，挪到明天下午。”
+
+Expected:
+
+DELAY_TASK
+
+==================================================
+MULTI-ACTION MESSAGE
+==================================================
+
+Support at least one controlled multi-action scenario.
+
+Example:
+
+“老师说英语作文周五交，我周四晚上写。”
+
+Expected conceptually:
+
+ActionGroup
+
+Action 1:
+CREATE_ASSIGNMENT
+
+Existing domain integration:
+creates/links Task
+
+Action 2:
+UPDATE/DELAY linked Task plannedStart
+to Thursday evening
+
+Do NOT create duplicate Assignment/Task if reconciliation can identify the same object.
+
+==================================================
+PARTIAL FAILURE
+==================================================
+
+If an ActionGroup contains multiple operations:
+
+some succeed
+some fail
+
+Result must be:
+
+PARTIAL
+
+Lim must say what happened.
+
+Do NOT respond:
+
+“都搞定了。”
+
+Example:
+
+“作业已经记录，但计划时间设置失败。”
+
+==================================================
+IDEMPOTENCY / DUPLICATE PROTECTION
+==================================================
+
+Avoid duplicate execution caused by:
+
+- browser retries
+- double submit
+- streaming retry
+- network retry
+
+Use an appropriate idempotency key tied to:
+
+message/action group
+
+where practical.
+
+At minimum:
+one message must not execute the same ActionGroup twice accidentally.
+
+==================================================
+UNDO
+==================================================
+
+Implement a SMALL safe Undo v1 for reversible R1 actions.
+
+At minimum support useful undo for:
+
+CREATE_TASK
+DELAY_TASK
+UPDATE_TASK
+
+If straightforward, also:
+
+RECORD_STATUS
+CREATE_LEARNING_RECORD
+
+Do not force every action to be reversible.
+
+Undo must execute through domain methods / safe transaction logic.
+
+Do not directly restore arbitrary raw DB blobs.
+
+==================================================
+LIM UI
+==================================================
+
+Turn the existing global Lim overlay into a real conversation surface.
+
+Preserve:
+
+source route
+source entity
+
+Mobile:
+sheet/fullscreen depending on available space.
+
+Desktop:
+overlay/right-side conversation surface as appropriate.
+
+Do NOT build Bridge yet.
+
+==================================================
+LIM CONVERSATION UX
+==================================================
+
+Prefer conversation-first.
+
+Do not fill the screen with:
+
+intent labels
+confidence percentages
+JSON
+tool logs
+
+Those belong to development diagnostics.
+
+User should mainly see:
+
+their message
+Lim reply
+small action receipt
+undo when useful
+
+==================================================
+DEVELOPMENT TRACE
+==================================================
+
+Add a DEV-ONLY trace/debug view or structured logging.
+
+For each Lim turn, make it possible for developers to inspect:
+
+mode
+intent
+selected domains
+retrieved context source refs
+excluded privacy-sensitive categories
+proposed actions
+validation
+risk
+execution result
+
+DO NOT expose sensitive raw content unnecessarily.
+
+Production/user UI must not show this debug trace.
+
+==================================================
+MODEL FAILURE
+==================================================
+
+AI Down != LIFE HUD Down.
+
+If the AI provider fails:
+
+- existing QUEST works
+- STUDY works
+- STATUS works
+- GROWTH works
+- HOME works
+
+Lim UI should fail gracefully.
+
+Example:
+
+“Lim 暂时无法连接。”
+
+Do not white-screen the application.
+
+Do not corrupt pending actions.
+
+==================================================
+PROVIDER CONFIGURATION
+==================================================
+
+Do not hardcode the runtime to one provider.
+
+Use the existing Ship/Vercel AI SDK abstraction.
+
+Support environment-based configuration.
+
+If no provider credentials are configured:
+
+- application still starts
+- Lim UI clearly indicates unavailable AI
+- automated Action pipeline tests use a mock/fake provider
+
+Do NOT require production cloud setup.
+
+Do NOT confuse zcode/Qoder coding delegation with the runtime Lim model.
+
+==================================================
+MODEL STRUCTURED OUTPUT
+==================================================
+
+Use strict structured model output.
+
+Conceptual shape:
+
+{
+  mode: "EXECUTE" | "ASSIST" | "TALK",
+  responseIntent: "...",
+  actions: [
+    {
+      type: "...",
+      confidence: "HIGH" | "MEDIUM" | "LOW",
+      payload: {...}
+    }
+  ]
+}
+
+Do not trust this object until:
+
+schema validation
+authorization
+risk checks
+
+all pass.
+
+==================================================
+MEMORY
+==================================================
+
+DO NOT build full long-term Memory Consolidation yet.
+
+No personality-pattern engine in this phase.
+
+Conversation history may persist through existing chat infrastructure.
+
+Do not automatically turn chats into:
+
+MemoryItems
+personality labels
+Captain Logs
+
+Memory comes later.
+
+==================================================
+NIGHT VOYAGE
+==================================================
+
+Do NOT implement Night Voyage yet.
+
+TALK mode is sufficient for this phase.
+
+==================================================
+REQUIRED ACTION TESTS
+==================================================
+
+LIM-001
+Clear CREATE_TASK R1 action executes.
+
+LIM-002
+Invalid structured payload is rejected before domain mutation.
+
+LIM-003
+User A cannot make Lim mutate User B entity.
+
+LIM-004
+Model cannot invent unknown action types.
+
+LIM-005
+“我真不想写高数了” does not drop Task.
+
+LIM-006
+“高数今天不做了，挪到明天下午” delays Task.
+
+LIM-007
+Task delay does not alter Assignment dueAt.
+
+LIM-008
+“高数作业做完了” completes Task.
+
+LIM-009
+Completion results in Assignment DONE but NOT_SUBMITTED.
+
+LIM-010
+“我交了” with clear Assignment context marks submitted.
+
+LIM-011
+Ambiguous “我交了” asks clarification rather than guessing.
+
+LIM-012
+Assignment due-date update uses University domain rules.
+
+LIM-013
+RECORD_STATUS supports partial status.
+
+LIM-014
+casual “我有点累” does not automatically write status.
+
+LIM-015
+explicit “记一下，我有点累” writes StatusMoment.
+
+LIM-016
+source-only LearningRecord may be created with reflection null.
+
+LIM-017
+Lim never fabricates reflection.
+
+LIM-018
+HIGH_PRIVATE aiAccess NEVER content is excluded from Context Builder.
+
+LIM-019
+current Course UI context prevents unnecessary “哪门课？” clarification.
+
+LIM-020
+partial multi-action failure reports PARTIAL.
+
+LIM-021
+same ActionGroup is not accidentally executed twice.
+
+LIM-022
+Undo restores a supported R1 action safely.
+
+LIM-023
+AI provider outage leaves non-AI modules working.
+
+==================================================
+GOLDEN LIM JOURNEY
+==================================================
+
+Run with a deterministic mock provider first,
+then with a configured real provider if credentials exist.
+
+1. Login.
+
+2. Open STUDY → 高等数学.
+
+3. Open global Lim.
+
+4. Say:
+
+“第三章作业今晚九点做。”
+
+5. Verify:
+
+Lim uses current course context.
+
+Existing linked Task planned time changes.
+
+No duplicate Task is created.
+
+6. Say:
+
+“做完了。”
+
+7. Verify:
+
+Task COMPLETED.
+
+Assignment:
+DONE
+NOT_SUBMITTED
+
+8. Lim must NOT claim submission.
+
+9. Say:
+
+“我交了。”
+
+10. Verify:
+
+Assignment SUBMITTED.
+
+11. Say:
+
+“老师说下一次作业周五交，我周四晚上写。”
+
+12. Verify controlled ActionGroup:
+
+Assignment created
+linked Task created
+planned time set
+
+13. Say:
+
+“我现在有点累。”
+
+14. Verify:
+no StatusMoment is silently created.
+
+15. Say:
+
+“记一下，精力 2，有点累。”
+
+16. Verify:
+StatusMoment created.
+
+17. Open a relevant Growth/Course context.
+
+18. Say:
+
+“把刚才过拟合那个想法记下来。”
+
+19. Verify:
+LearningRecord created from real user/context wording.
+
+No invented reflection.
+
+20. Reload.
+
+21. Conversation and executed domain state persist.
+
+22. Disable/mock AI failure.
+
+23. Verify:
+QUEST/STUDY/STATUS/GROWTH remain usable.
+
+==================================================
+VISUAL / PERSONALITY REQUIREMENT
+==================================================
+
+Preserve LIFE HUD visual language.
+
+Lim should feel like part of LIFE HUD,
+not an embedded generic ChatGPT clone.
+
+Use:
+
+restrained HUD
+quiet dark-space atmosphere
+clean conversation cards
+small action receipts
+
+Do not overdecorate chat.
+
+==================================================
+DO NOT IMPLEMENT
+==================================================
+
+Do NOT implement:
+
+full long-term memory
+Memory consolidation
+Shared Context learning
+Night Voyage
+Bridge
+voice
+live avatar
+full Attention Engine
+semantic RAG
+SOCIAL
+WALLET
+automatic external messages
+payments
+bulk destructive actions
+
+==================================================
+LOCAL ONLY
+==================================================
+
+Public deployment remains out of scope.
+
+Do not spend time on deployment.
+
+==================================================
+PHASE ACCEPTANCE
+==================================================
+
+PHASE 5 is complete when:
+
+1. Lim is a real persistent conversation UI.
+
+2. EXECUTE / ASSIST / TALK modes exist.
+
+3. Context Builder exists.
+
+4. Context retrieval is minimal and domain-specific.
+
+5. privacy gate occurs before model context.
+
+6. HIGH_PRIVATE / NEVER content cannot enter context.
+
+7. strict Action Registry exists.
+
+8. model cannot directly mutate DB.
+
+9. structured Action Proposal is validated.
+
+10. risk classification works.
+
+11. R1 high-confidence execution works.
+
+12. meaningful ambiguity produces concise clarification.
+
+13. existing domain methods are reused.
+
+14. Task/Assignment invariants remain correct.
+
+15. RECORD_STATUS works.
+
+16. CREATE_LEARNING_RECORD works without fabricated reflection.
+
+17. multi-action ActionGroup works.
+
+18. partial failure is truthful.
+
+19. idempotency exists.
+
+20. safe Undo v1 exists.
+
+21. owner isolation passes.
+
+22. AI provider failure is graceful.
+
+23. non-AI product remains usable without AI.
+
+24. existing visual quality remains intact.
+
+25. build passes.
+
+26. typecheck passes.
+
+27. automated tests pass.
+
+28. browser/E2E Golden Lim Journey passes.
+
+==================================================
+FINAL REPORT
+==================================================
+
+At completion report concisely:
+
+- Lim architecture implemented
+- modes implemented
+- Action Registry
+- Context Providers
+- privacy gate behavior
+- natural-language scenarios verified
+- ActionGroup / undo behavior
+- provider status
+- failure behavior
+- authorization tests
+- automated tests
+- browser/E2E result
+- zcode/Qoder delegation report
+- unresolved issues
+
+Commit the phase safely.
+
+Then STOP.
+
+Do NOT automatically begin HOME Attention Engine or Memory.

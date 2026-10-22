@@ -1,0 +1,28 @@
+{
+  "name": "@ship/db",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "postgres": "^3.4.7"
+  },
+  "peerDependencies": {
+    "drizzle-orm": "*"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build:types": "tsc --emitDeclarationOnly"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "@types/node": "catalog:",
+    "drizzle-orm": "catalog:"
+  },
+  "types": "./dist/index.d.ts"
+}

@@ -1,0 +1,10 @@
+import { serve } from '@hono/node-server';
+import config from '@/config';
+import app from '@/server';
+import { databaseClient } from '@/db';
+const server=serve({fetch:app.fetch,hostname:'127.0.0.1',port:config.PORT});
+let closing=false;
+const close=()=>{if(closing)return;closing=true;server.close();void databaseClient.end({timeout:2}).finally(()=>process.exit(0));};
+process.once('SIGINT',close);process.once('SIGTERM',close);
+console.log('LIFE HUD API listening at '+config.API_URL);
+export default app;

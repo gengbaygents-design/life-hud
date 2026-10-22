@@ -1,0 +1,101 @@
+.personal-workspace .page-intro,
+.personal-period {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--hud-space-3);
+}
+.personal-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: var(--hud-space-5);
+}
+.personal-grid > *,
+.personal-workspace article {
+  min-width: 0;
+}
+.personal-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hud-space-4);
+}
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--hud-space-2);
+}
+.mood-btn {
+  min-height: 44px;
+  padding: var(--hud-space-3);
+  border: 1px solid var(--hud-border-soft);
+  border-radius: var(--hud-radius-md);
+  background: transparent;
+}
+.mood-btn[aria-pressed='true'] {
+  border-color: var(--hud-accent);
+  background: var(--hud-accent-soft);
+}
+.mood-btn {
+  color: var(--hud-text-primary);
+  cursor: pointer;
+  transition:
+    background var(--hud-motion-fast),
+    border-color var(--hud-motion-fast);
+}
+.mood-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.personal-prose {
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.9;
+}
+.personal-secondary {
+  margin-block: var(--hud-space-5);
+}
+.personal-secondary > summary {
+  cursor: pointer;
+  min-height: 44px;
+  color: var(--hud-text-secondary);
+}
+.personal-workspace .task-form {
+  max-height: 60dvh;
+  overflow: auto;
+}
+.personal-evidence {
+  padding-block: var(--hud-space-4);
+  border-bottom: 1px solid var(--hud-border-soft);
+}
+.personal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hud-space-2);
+  margin-block: var(--hud-space-3);
+}
+.personal-workspace .personal-moment,
+.personal-workspace .personal-skill {
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--hud-border-soft);
+  border-radius: 0;
+  padding-block: var(--hud-space-3);
+  padding-inline: 0;
+}
+.personal-workspace h3 {
+  font-size: var(--hud-type-card);
+  font-weight: 500;
+}
+.optional-details summary {
+  min-height: 44px;
+  cursor: pointer;
+}
+.optional-details[open] .form-field {
+  margin-top: var(--hud-space-3);
+}
+@media (max-width: 850px) {
+  .personal-grid {
+    grid-template-columns: 1fr;
+  }
+}

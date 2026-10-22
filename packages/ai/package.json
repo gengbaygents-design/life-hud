@@ -1,0 +1,26 @@
+{
+  "name": "@ship/ai",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "@ai-sdk/google": "^3.0.29",
+    "@ai-sdk/openai": "3.0.41",
+    "ai": "^6.0.86"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build:types": "tsc --emitDeclarationOnly"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  },
+  "types": "./dist/index.d.ts"
+}

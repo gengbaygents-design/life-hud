@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "phase": "PHASE_9A_PUBLIC_DAILY_DRIVER",
+  "epics": {
+    "10": "NOT_STARTED",
+    "11": "NOT_STARTED",
+    "12": "NOT_STARTED",
+    "13": "NOT_STARTED",
+    "00": "COMPLETED",
+    "01": "NOT_STARTED",
+    "02": "NOT_STARTED",
+    "03": "NOT_STARTED",
+    "04": "NOT_STARTED",
+    "05": "NOT_STARTED",
+    "06": "NOT_STARTED",
+    "07": "NOT_STARTED",
+    "08": "NOT_STARTED",
+    "09": "NOT_STARTED"
+  },
+  "authorization": "用户认可 Phase 8 运行时验证，授权通过本机 WorkBuddy 完成现有完整栈的公网 Daily Driver 部署；保留本地环境，不引入其他托管商或新产品功能。",
+  "milestones": {
+    "sourcePreservation": "PASS",
+    "shipScaffold": "COMPLETE",
+    "engineeringChecks": "PASS",
+    "serviceRuntime": "PASS",
+    "shipRebaseAcceptance": "PASS",
+    "shellPhase": "COMPLETED",
+    "coreQuestPhase": "COMPLETED",
+    "universityStudyPhase": "COMPLETED",
+    "statusGrowthPhase": "COMPLETED",
+    "limCorePhase": "COMPLETED",
+    "homeAttentionPhase": "COMPLETED",
+    "reminderArchivePhase": "COMPLETED",
+    "visualPolishPhase": "RUNTIME_VERIFIED"
+  },
+  "engineeringStrategy": "SHIP_REBASE",
+  "updatedAt": "2026-10-22",
+  "phase8": {
+    "status": "RUNTIME_VERIFIED",
+    "source": "docs/source/phase8-visual-polish.txt",
+    "scope": "Web visual and UX only; no domain/schema changes",
+    "acceptance": "USER_AUTHORIZED_PHASE9A_AFTER_RUNTIME_VERIFICATION",
+    "runtimeRegression": "CONFIG_AND_TEST_ISOLATION_FIXED_CURRENT_BROWSER_RECOVERED",
+    "runtimeReport": "docs/PHASE_8_RUNTIME_FIX.md"
+  },
+  "phase9a": {
+    "status": "IN_PROGRESS",
+    "source": "docs/source/phase9a-public-daily-driver.txt",
+    "acceptance": "NOT_ACCEPTED",
+    "deployment": "NOT_DEPLOYED",
+    "nextRequiredAction": "ACCOUNT_SPECIFIC_ANNUAL_QUOTE_FROM_CONSOLE",
+    "workbuddyConnection": "CONNECTED_RESOURCE_QUERY_SUCCEEDED",
+    "cloudbaseEnvironment": "life-hud-prod",
+    "databaseTenantType": "SHARED",
+    "cloudRun": "NOT_INITIALIZED",
+    "monthlyBudgetCny": 30,
+    "managedDatabaseBudget": "BLOCKER_WITH_EXISTING_CONTINUOUS_SCHEDULER",
+    "lighthouseShanghaiCatalog": "41_OF_41_QUERIED_MINIMUM_35_CNY_PER_MONTH",
+    "lighthouseAnnualQuote": "CAM_PERMISSION_DENIED_NO_ORDER_CREATED",
+    "publicUrl": null,
+    "report": "docs/PHASE_9A_PUBLIC_DAILY_DRIVER.md"
+  }
+}

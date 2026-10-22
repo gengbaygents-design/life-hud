@@ -1,0 +1,9 @@
+{
+  "moments": [
+    {"key":"morning","time":"09:05","mood":"CALM","energy":3,"stress":2},
+    {"key":"afternoon","time":"13:10","mood":"TIRED","energy":2,"note":"午饭后有点困"}
+  ],
+  "water": [{"key":"water-morning","time":"10:30","amountMl":300},{"key":"water-afternoon","time":"13:40","amountMl":250}],
+  "reflection":"如果系统太依赖我过去的行为，\n会不会反过来把我固定成某种人？",
+  "skills":[{"key":"ai","name":"AI / Agent Systems"},{"key":"design","name":"Product Design"},{"key":"web","name":"Web Development"}]
+}

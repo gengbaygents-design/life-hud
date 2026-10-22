@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "method": "deterministic-local-source-extraction",
+  "sourcePath": "docs/source/epic0.txt",
+  "sourceSha256": "449b2c140997ce4b01db04bc677ca5a25b003cff7b0dc5b6cffab1c359bec8e4",
+  "documents": [
+    {
+      "path": "docs/PRODUCT_VISION.md",
+      "sourceSections": [
+        "PRODUCT",
+        "PRIMARY PRODUCT MODULES",
+        "HOME"
+      ]
+    },
+    {
+      "path": "docs/PRODUCT_CONSTITUTION.md",
+      "sourceSections": [
+        "PRODUCT CONSTITUTION"
+      ]
+    },
+    {
+      "path": "docs/CORE_ARCHITECTURE.md",
+      "sourceSections": [
+        "TOP-LEVEL ARCHITECTURE",
+        "TECHNICAL DIRECTION",
+        "SOURCE OF TRUTH"
+      ]
+    },
+    {
+      "path": "docs/DOMAIN_MODEL.md",
+      "sourceSections": [
+        "TOP-LEVEL ARCHITECTURE",
+        "REAL WORLD EVENT",
+        "ENTITY LINK",
+        "QUEST",
+        "STATUS",
+        "GROWTH / LEARNING",
+        "ARCHIVE"
+      ]
+    },
+    {
+      "path": "docs/UNIVERSITY_PACK.md",
+      "sourceSections": [
+        "STUDY / UNIVERSITY PACK"
+      ]
+    },
+    {
+      "path": "docs/LIM_SPEC.md",
+      "sourceSections": [
+        "LIM",
+        "LIM MEMORY",
+        "CONTEXT BUILDER",
+        "PRIVACY"
+      ]
+    },
+    {
+      "path": "docs/DATABASE_SCHEMA.md",
+      "sourceSections": [
+        "DATA CONVENTIONS",
+        "DOMAIN EVENTS / OUTBOX",
+        "ENTITY LINK"
+      ]
+    },
+    {
+      "path": "docs/ACTION_CONTRACT.md",
+      "sourceSections": [
+        "LIM ACTION SAFETY"
+      ]
+    },
+    {
+      "path": "docs/MVP_SPEC.md",
+      "sourceSections": [
+        "MVP v0.1",
+        "GOLDEN MVP JOURNEY"
+      ]
+    },
+    {
+      "path": "docs/DESIGN_LANGUAGE.md",
+      "sourceSections": [
+        "MOBILE IA",
+        "VISUAL LANGUAGE",
+        "LIM VISUAL"
+      ]
+    }
+  ]
+}

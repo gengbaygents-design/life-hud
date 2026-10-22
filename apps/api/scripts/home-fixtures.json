@@ -1,0 +1,78 @@
+{
+  "courses": [
+    {
+      "key": "math",
+      "name": "高等数学"
+    },
+    {
+      "key": "ai",
+      "name": "计算机思维与人工智能基础"
+    }
+  ],
+  "sessions": [
+    {
+      "key": "math-class",
+      "courseKey": "math",
+      "start": "09:50",
+      "end": "11:25"
+    },
+    {
+      "key": "ai-class",
+      "courseKey": "ai",
+      "start": "14:00",
+      "end": "15:35"
+    }
+  ],
+  "tasks": [
+    {
+      "key": "parcel",
+      "title": "拿快递",
+      "plannedTime": "16:00",
+      "estimatedMinutes": 10,
+      "importance": "NORMAL",
+      "dueTime": null,
+      "assignmentCourseKey": null
+    },
+    {
+      "key": "math",
+      "title": "高数第三章作业",
+      "plannedTime": "20:00",
+      "estimatedMinutes": 35,
+      "importance": "HIGH",
+      "dueTime": "23:59",
+      "assignmentCourseKey": "math"
+    },
+    {
+      "key": "reading",
+      "title": "英语阅读",
+      "plannedTime": null,
+      "estimatedMinutes": 20,
+      "importance": "NORMAL",
+      "dueTime": null,
+      "assignmentCourseKey": null
+    },
+    {
+      "key": "architecture",
+      "title": "整理 LIFE HUD 架构",
+      "plannedTime": null,
+      "estimatedMinutes": 90,
+      "importance": "HIGH",
+      "dueTime": null,
+      "assignmentCourseKey": null
+    }
+  ],
+  "status": [
+    {
+      "key": "morning",
+      "time": "09:05",
+      "mood": "CALM",
+      "energy": 3
+    },
+    {
+      "key": "afternoon",
+      "time": "13:10",
+      "mood": "TIRED",
+      "energy": 2
+    }
+  ]
+}

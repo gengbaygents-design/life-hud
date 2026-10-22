@@ -1,0 +1,185 @@
+.quest-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.task-item {
+  padding: var(--hud-space-4) 0;
+  border-bottom: 1px solid var(--hud-border-soft);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.task-title {
+  display: block;
+  min-height: 44px;
+  text-align: left;
+  color: var(--hud-text-primary);
+  font-size: 15px;
+  line-height: 1.6;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+.task-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin: 8px 0;
+  color: var(--hud-text-secondary);
+  font-size: 12px;
+}
+.task-meta time,
+.task-meta span {
+  display: block;
+}
+.task-card-actions,
+.task-dialog-actions,
+.task-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.task-card-actions .action-button {
+  font-size: 12px;
+  padding-inline: 10px;
+}
+.task-form {
+  display: grid;
+  gap: 18px;
+}
+.form-field {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  min-width: 0;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.task-form :is(input, select, textarea) {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  border: 1px solid var(--hud-border-soft);
+  border-radius: var(--hud-radius-sm);
+  background: var(--hud-surface);
+  color: var(--hud-text-primary);
+  padding: 10px;
+  font: inherit;
+  box-sizing: border-box;
+}
+.task-form :is(input, select, textarea):focus-visible {
+  outline: 2px solid var(--hud-accent);
+  outline-offset: 2px;
+}
+.task-form :is(input, textarea):disabled {
+  opacity: 0.65;
+}
+.task-form-help {
+  color: var(--hud-text-secondary);
+  font-size: 12px;
+}
+.task-form-details {
+  display: grid;
+  gap: 14px;
+}
+.task-form-details[open] > .form-field,
+.task-form-details[open] > .form-grid {
+  margin-top: 14px;
+}
+.task-form summary,
+.quest-history summary,
+.shell-modal summary {
+  cursor: pointer;
+  min-height: 44px;
+  display: list-item;
+  align-content: center;
+  color: var(--hud-accent);
+  font-size: 13px;
+}
+.quest-history-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.quest-history-list > .task-item {
+  padding: 20px;
+  border: 1px solid var(--hud-border-soft);
+  border-radius: var(--hud-radius-md);
+  background: var(--hud-surface-glass);
+}
+.task-audit {
+  font-size: 12px;
+  display: grid;
+  gap: 12px;
+  padding-top: 12px;
+}
+.task-audit li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+}
+.task-audit time {
+  color: var(--hud-text-secondary);
+}
+.shell-modal:has(.task-form) {
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+  width: min(680px, calc(100vw - 32px));
+  max-width: 680px;
+}
+.home-next .text-link {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  font-size: 13px;
+  margin-top: 8px;
+}
+.hud-shell [role='alert'],
+.shell-modal [role='alert'] {
+  color: var(--hud-warning);
+  font-size: 13px;
+}
+@media (max-width: 767px) {
+  .form-grid,
+  .quest-history-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .quest-intro > .action-button {
+    width: 100%;
+  }
+}
+
+.task-item:last-child {
+  border-bottom: 0;
+}
+.task-item[data-state='DROPPED'] .task-title {
+  color: var(--hud-text-secondary);
+}
+.quest-column[aria-label='NOW'] {
+  border-color: var(--hud-border-strong);
+  background: var(--hud-surface-elevated);
+}
+.task-title {
+  font-size: var(--hud-type-card);
+  font-weight: 500;
+}
+.task-meta .status-chip {
+  align-self: center;
+}
+.quest-column .task-card-actions {
+  display: inline-flex;
+  margin-top: 4px;
+}
+.quest-column .task-item > .action-button {
+  font-size: var(--hud-type-meta);
+}
+.task-form :is(input, select, textarea) {
+  font-size: 16px;
+}
