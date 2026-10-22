@@ -3,7 +3,8 @@ const path = require('node:path');
 const cp = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 for (const name of ['tmp', 'cache', 'pnpm-store', 'pnpm-state', 'pnpm-config', 'pnpm-home', 'logs']) fs.mkdirSync(path.join(root, '.local', name), { recursive: true });
-const cli = 'C:/Users/35889/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/pnpm/bin/pnpm.mjs';
+const localCli = path.join(root, '.local/runtime/pnpm/bin/pnpm.mjs');
+const cli = fs.existsSync(localCli) ? localCli : 'C:/Users/35889/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/pnpm/bin/pnpm.mjs';
 const args = process.argv.slice(2);
 process.env.BETTER_AUTH_TELEMETRY = 'false';
 const child = cp.spawn(process.execPath, [cli, ...args], {

@@ -16,7 +16,12 @@ function Test-LocalReady([string]$Address) {
 }
 
 try {
-    $taskNode = (Get-Command node -CommandType Application -ErrorAction Stop).Source
+    $taskNode = Join-Path $taskRoot '.local\runtime\node.exe'
+    if (!(Test-Path -LiteralPath $taskNode)) {
+        $taskNode = (Get-Command node -CommandType Application -ErrorAction Stop).Source
+    }
+    # Explorer does not inherit the coding tool's temporary PATH.
+    $env:PATH = (Split-Path -Parent $taskNode) + [IO.Path]::PathSeparator + $env:PATH
     # Serialize double-clicks without locking any application data or credentials.
     $taskLockPath = Join-Path $taskLogDir 'launcher.lock'
     try {
